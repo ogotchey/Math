@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{chunk}[theorem]{}
+
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\scrO}{\mathscr{O}}
+
+\begin{document}
+\title{MATH 5362 Homework}
+\author{Orin Gotchey}
+\maketitle
+\section{Homework 1}
+\begin{lemma}
+If $\alpha^n\in\scrO_{K}$ for some natural number $n\in\N$ and field $K$, then $\alpha\in\scrO_{K}$
+\end{lemma}
+\begin{proof}
+Let $\alpha,\;n\;,K$ be as stated.  Then there exists some $g(x)\in\Z[x]$, written
+\begin{equation}
+g(x) = \Sigma_{i=0}^{deg(g)}(\beta_ix^i)
+\end{equation}
+where $\beta_i\in\Z$, and such that $g(\alpha^n)=0$.  But $\alpha$ must be a root of:
+\begin{equation}
+h(x) := g(x^n) \in\Z[x]
+\end{equation}
+\end{proof}
+This in fact makes $\scrO_K$ into a radical $K$-ideal
+\begin{proposition}{Problem 1}
+
+$\theta := \frac{10^{\frac{2}{3}}-1}{\sqrt{-3}}$ is an algebraic integer.
+\end{proposition}
+\begin{proof}
+\begin{equation}
+\omega := (-3\cdot\theta^2)+1 = 10^{\frac{4}{3}} - 2*10^{\frac{2}{3}}
+\end{equation}
+Since $\scrO$ is a ring, and since $10^{\frac{2}{3}}$ is a root of $f(x) = x^3-100$, and is therefore an algebraic integer, we get: $\omega\in\scrO$.  That is, there exists some $f\in\Z[x]$ such that $f(\omega)=0$.  But then $f(-3\cdot\theta^2)=0$ gives rise to another $g(x)\in\Z[x]$ such that $g(\theta)=0$.  So $\theta\in\scrO$, as required;
+\end{proof}
+\begin{proposition}{Problem 2}\\
+For any $n\in\N$, the complex value: $\alpha = \frac{\sqrt{m}+1}{\sqrt{2}}\in\scrO$
+\end{proposition}
+\end{document}
