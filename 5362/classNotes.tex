@@ -8,9 +8,8 @@
 \usepackage{graphicx}
 \usepackage{fullpage}
 \usepackage{color}
-\usepackage{tikz-cd}
+\usepackage{enumerate}[shortlabels]
 \usepackage{hyperref}
-\usepackage[shortlabels]{enumitem}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -21,18 +20,19 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\air}{\mathcal{O}_K}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\D}{\mathbb{D}}
 \newcommand{\HH}{\mathbb{H}}
 \newtheorem{theorem}{Theorem}
-\newtheorem{example}{Example}
 \newtheorem{remark}{Remark}
+\newtheorem{cor}{Corollary}
+\newtheorem{example}{Example}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
-\title{Topology Notes - Spring 2022}
+\title{Algebraic Number Theory Notes - Spring 2022}
 \author{JJ Hoo}
 \date{January 2022}
 
@@ -41,556 +41,527 @@
 \maketitle
 \tableofcontents
 \newpage
-\section{General Topology}
-\subsection{August 30, 2022}
+\section{Algebraic Numbers and Algebraic Integers}
+\subsection{August 26, 2022}
 \begin{definition}
-Let $X$ be a set. A topology $\tau$ on $X$ is a family of subsets (called open subsets) such that:
-\begin{enumerate}
-    \item $\emptyset, X\in\tau$
-    \item Finite intersections of open subsets are open
-    \item Arbitrary unions of open subsets are open
-\end{enumerate}
+A number $\alpha\in\C$ is called \underline{algebraic number} if there exists $0\neq f(x)\in\Q[x]$ such that $f(\alpha)=0$. In other words, $\alpha$ is algebraic over $\Q$.
 \end{definition}
+\noindent Note that if $\alpha$ is an algebraic number, then there exists $0\neq g(x)\in\Z[x]$ such that $g(\alpha)=0$\footnote{This is done by multiplying $f(x)$ through by the LCM}.
+\begin{definition}
+$\alpha$ is an \underline{algebraic integer} if there exists $0\neq f(x)\in \Z[x]$ where $f$ is monic, such that $f(\alpha)=0$.
+\end{definition}
+\begin{proposition}
+Every algebraic integer is an algebraic number. On the other hand, the converse ise false.
+\end{proposition}
+\begin{example}
+Let $\alpha=\frac{\sqrt{2}}{3}$. This is an algebraic number, but NOT an algebraic integer.\\
+\\
+Consider $f(x)=9x^2-2\in \Z[x]\subseteq \Q[x]$. Then, $f(\alpha)=0$, so $\alpha$ is an algebraic number.\\
+\\
+Now, let $g(x)\in \Z[x]$ be a monic polynomial such that $g(\alpha)=0$. Then, $g(x)=x^n+a_{n-1}x^{n-2}+\cdots +a_1x + a_0$, where $a_1,\cdots, a_{n-1}\in\Z$.
+\begin{align*}
+    g(\alpha)=0&\implies \left(\frac{\sqrt{2}}{3}\right)^n + a_{n-1}\left(\frac{\sqrt{2}}{3}\right)^{n-1}+\cdots + a_1\left(\frac{\sqrt{2}}{3}\right)+a_0=0\\
+    &\implies (\sqrt{2})^n + a_{n-1}(\sqrt{2})^{n-1}\cdot 3+\cdot + a_1(\sqrt{2})\cdot 3^{n-1} + a_03^n = 0\\
+    &\implies \displaystyle\sum_{t=0}^n (\sqrt{2})^ta_t3^{n-t}=0\\
+    &\implies \underbrace{\displaystyle\sum_{t\text{ even}} (\sqrt{2})^ta_t3^{n-t}}_{\in\Z} + \underbrace{\displaystyle\sum_{t\text{ odd}} (\sqrt{2})^ta_t3^{n-t}=0}_{\in\sqrt{2}\Z\neq \Z}\\
+    &\implies \overbrace{\displaystyle\sum_{t\text{ even}} (\sqrt{2})^ta_t3^{n-t}=0}^{\text{ Case 1}} \wedge \overbrace{\displaystyle \sqrt{2}\underbrace{\sum_{t\text{ odd}} (\sqrt{2})^{t-1}a_t3^{n-t}=0}_{\in\Z}}^{\text{Case 2}}\\
+\end{align*}
+If $n$ is even, we use Case 1 to get an extra term of $2^{\frac{n}{2}}$ and $3$ divides the remaining terms, so we reach a contradiction. If $n$ is odd, we repeat this for Case 2. Thus, no such monic $g$ exists, and so $\alpha$ is not an algebraic integer.
+\end{example}
+\noindent Every $\alpha\in\Q$ is an algebraic number\footnote{Take $f(x)=x-\alpha\in\Q[x]$}. Now, we consider $\Q\cap \{\text{algebraic integers}\}$.\\
+\\
+Let $\alpha=\frac{r}{s}\in\Q$ be an algebraic integer, where $gcd(r,s)=1$ and $s\neq 0$. There exists, then, a monic non-zero $f(x)\in\Z[x]$ such that $f(\alpha)=0$.\\
+\\
+Let $f(x)=x^n+a_{n-1}x^{n-1}+\cdots +a_1x+a_0$. Using the same trick as before, we multiply to get:
+$$r^n=-(a_{n-1}r^{n-1}s+\cdots +a_1rs^{n-1})$$
+However, this implies $s|r^n$. If $p$ is a prime dividing $s$, then $p|r^n\implies p|r\implies gcd(r,s)\geq p\implies s=1\implies \alpha=r\in\Z$.\\
+\\
+In conclusion, $\Z$ is the set of algebraic integers in $\Q$.
+\subsection{August 29, 2022}
+\begin{theorem}
+Let $\alpha$ be an algebraic number. Then, there exists a unique polynomial $p(x)\in\Q[x]$ which is monic, irreducible and of lowest degree such that $p(\alpha)=0$. By definition, $p(x)$ is the \underline{minimal polynomial of $\alpha$ over $\Q$}. Furthermore, if $f(x)\in\Q[x]$ and $f(\alpha)=0$, then $p(x)|f(x)$.
+\end{theorem}
+\begin{proof}
+Since $\alpha$ is an algebraic number, there exist a set of polynomials of the form $f(x)\in\Q[x]$ such that $f(\alpha)=0$. We choose $p(x)$ from this set to be of lowest degree. We must show that $p(x)$ is irreducible.\\
+\\
+Let $p(x)=a(x)b(x)$, where $a(x),b(x)\in\Q[x]$, $deg(a(x))<deg(p(x))$, and $deg(b(x))<deg(p(x))$. In other words, assume that $p(x)$ is reducible.
+$$0=p(\alpha)=a(\alpha)b(\alpha)$$
+Note that since $\C$ is an integral domain, we get that either $a(\alpha)=0$ or $b(\alpha)=0$. This immediately gives a contradiction, as $a(x)$ and $b(x)$ now belong to our original set of possible $f(x)'s$, and are both of lower degree than $p(x)$. Thus, $p(x)$ is irreducible. We can force this to be monic by multiplication of the inverse of the leading coefficient, since $\Q$ is a field. We have thus constructed a $p'(x)\in\Q[x]$ which is monic, irreducible, and of lowest degree. \\
+\\
+It remains to be shown that our monic, irreducible polynomial $p(x)$ of lowest degree is unique. Suppose $g(x)$ is another such polynomial. Since $\Q[x]$ is a Euclidean Domain, we enjoy the Division Algorithm, and so $f(x)=q(x)g(x)+r(x)$, where $q(x),r(x)\in\Q[x]$, and either $deg(r(x))<deg(g(x))$ or $r(x)=0$.
+So 
+$$0=p(\alpha)=q(\alpha)\underbrace{g(\alpha)}_{=0}+r(\alpha)\implies r(\alpha)=0$$
+Since $g(x)$ is of minimal degree, we must then have $r(x)=0$. Thus, $p(x)=q(x)g(x)$. Since $p(x)$ and $g(x)$ are of minimal degree, they must have the same degree, which means in turn that $q(x)=c$ for some $c\in\Q$. Given now that $p(x)=cg(x)$ and that $p$ and $g$ are monic, we must have $c=1$, and so we have our result that $p(x)=g(x)$.\\
+\\
+Now, let $f(x)\in\Q[x]$ such that $f(\alpha)=0$. Then, $f(x)=q(x)p(x)+r(x)$ with $deg(r(x))<deg(p(x))$ or $r(x)=0$. By a similar argument as above, $p(\alpha)=0\implies r(x)=0$ by minimality of $p(x)$, so $p(x)|f(x)$.
+\end{proof}
+\begin{definition}
+We denote the degree of $\alpha$ over $\Q$ as $deg_\Q(\alpha)=deg(p(x))$, where $p(x)$ is the minimal polynomial of $\alpha$.
+\end{definition}
+\begin{example}
+Find the minimal polynomial of $\alpha=\sqrt{1+\sqrt{7}}$.\\
+\\
+Let $x=\sqrt{1+\sqrt{7}}$.
+$$x^2=1+\sqrt{7}$$
+$$x^2-1 = \sqrt{7}$$
+$$(x^2-1)^2=7$$
+$$x^4-2x^2-6=0$$
+Now, let $p(x)=x^4-2x^2-6$. Then, $p(\alpha)=0$. $p$ is already monic, so we use Eisenstein's Creiterion with $p=2$. Since $2^2\not| 6$, $p(x)$ is indeed irreducible
+\end{example}
+\noindent As a reminder, Eisenstein's Criterion states that if $f(x)=\displaystyle\sum_{i=0}^n a_ix^i$, where $a_i\in\Z$, if there is a prime $p$ such that $p\not | a_n,$, $p|a_i$ otherwise, and $p^2\not| a_0$, then $f(x)$ is irreducible over $\Q$. Another method to keep in mind here would be the Rational Roots Theorem.
+\begin{definition}
+Let $E,F$ be fields, where $F\subseteq E$. We call $E$ an \underline{extension} of $F$ (or a field extension), and $F$ is denoted as the \underline{base field}. For instance, $\C$ is an extension of $\Q$. We further note that $E$ is a vector space over $F$.
+\end{definition}
+\noindent Recall that if $F$ is a field, and $E$ is an extension of $F$ such that $\alpha\in E$:
+$$F[\alpha]=\{f(\alpha):\ f(x)\in F[x]\}\subseteq E$$
+$$F(\alpha)=\{\frac{f(\alpha)}{g(\alpha)}:\ f(x),g(x)\in F[x], g(\alpha)\neq 0\}\subseteq E$$
+\noindent $F[\alpha]$ is the smallest subring of $E$ containing $\alpha$, and $F(\alpha)$ is the smallest subfield of $E$ containing $\alpha$. We note that $F[\alpha]=F(\alpha)$ iff $\alpha$ is algebraic over $F$.
+\begin{definition}
+Let $\alpha$ be an algebraic number. Define :
+$\Q[\alpha]:=\{f(\alpha):\ f(x)\in\Q[x]\}$
+\end{definition}
+\begin{proposition}
+Let $\alpha$ be an algebraic number. $\Q[\alpha]$ is a field, which we will then denote $\Q(\alpha)$.
+\end{proposition}
+\begin{proof}
+Let $p(x)$ be the minimal polynomial of $\alpha$ Consider $\phi_\alpha: \Q[x]\rightarrow \Q[\alpha]$, where $\phi_\alpha(f(x))=f(\alpha)$. $\phi_\alpha$ is a ring homomorphism. We note that $$ker(\phi)=\{f\in\Q[x]:\ \phi(f)=0\}=\langle p(x)\rangle$$
+By the First Isomorphism Theorem, we then have that:
+$$\Q[x]/\langle p(x)\rangle = \Q[\alpha]$$
+Since $p(x)$ is irreducible, we have that $\langle p(x)\rangle$ is a maximal ideal, so $\Q[x]/\langle p(x)\rangle$ is a field since it is the quotient of an integral domain by a maximal ideal. Thus, $\Q[\alpha]$ is a field.
+\end{proof}
+\begin{definition}
+A field $\Q\subseteq K\subseteq \C$ is an \underline{algebraic number field} if its dimension as a vector space over $\Q$ is finite.
+\end{definition}
+\noindent Suppose $F\subseteq E$ is a finite extension. We write $[E:F]=\text{dim}_F(E)$. Furthermore, every finite extension is an algebraic extension. 
+\begin{definition}
+$E$ is an \underline{algebraic extension} of $F$ if every element $\alpha\in E$ is algebraic over $F$. In other words, $\exists f(x)\in F[x]$ such that $f(\alpha)=0$.
+\end{definition}
+\noindent We note that $deg_F(\alpha)\leq [E:F]$ if $E$ is a finite extension of $F$.\\
+\\
+So, if $K$ is an algebraic number field, then $K=\Q(\alpha_1,\alpha_2,\cdots,\alpha_n)$ for some $n\in\N$. We note here that $\Q(\alpha,\beta)=\Q(\alpha)$. The dimension of $K$ over $\Q$ is denoted $[K:\Q]$.\\
+\\
+\noindent If $\alpha$ is an algebraic number, and $deg(\alpha)=n$, then $\Q(\alpha)$ is an algebraic number field, and $[\Q(\alpha):\Q]=n$, with basis $\{\alpha^i\}_{i=0}^{n-1}$.
+\begin{lemma}
+Let $F\subseteq \C$ be a subfield of $\C$. Let $f(x)\in F[x]$ of degree $n$ be irreducible. Then $f(x)$ has $n$ distinct roots.
+\end{lemma}
+\begin{proof}
+Let $f(x)=\displaystyle \sum_{i=0}^n a_ix^i$. Recall the formal derivative $f'(x)=\displaystyle \sum_{i=1}^n a_i(n-i)x^{n-1}$. Assume, for the sake of contradiction, that $f(x)$ has a repeated root $\alpha\in \C$. In other words, $(x-\alpha)^2|f(x)$. Let:
+$$f(x)=(x-\alpha)^2g(x)\implies p'(x)=(x-\alpha)^2g'(x)+2g(x)(x-\alpha)$$
+Thus, $f'(\alpha)=0$. Let $h(x)=gcd(f(x),f'(x))\in F[x]$. Note $f'(x)\in F[x]$, and there exist $u(x),v(x)\in F[x]$ such that:
+$$h(x)=u(x)f(x)+v(x)f'(x)\implies h(\alpha)=0$$
+Thus, $h|f$, but $f$ is irreducible over $F$, so $h(x)=c$ or $h(x)=cf(x)$, where $c\in F\backslash \{0\}$. $h(\alpha)=0$, so we must have that $h(x)=cf(x)$. Then, $f|f'$ because $h|f'$. Thus, there are no repeated roots, so $f(x)$ has $n$ distinct roots in $\C$
+\end{proof}
+\begin{theorem}[Primitive Element Theorem]
+If $\alpha$ and $\beta$ are algebraic numbers, then there exists an algebraic number $\theta$ such that $\Q(\alpha,\beta)=\Q(\theta)$
+\end{theorem}
+\begin{proof}
+Let $p(x)=\displaystyle\prod_{i=1}^n x-\alpha_i$ and $q(x)=\displaystyle\prod_{i=1}^m x-\beta_i$ be the minimal polynomials of $|alpha$ and $\beta$ respectively, where $\alpha_1=\alpha$ and $\beta_1=\beta$. By the previous lemma, all these coefficients are distinct in $\C$. \\
+\\
+\noindent Consider for any $1\leq i\leq n$, $2\leq j\leq m$:
+\begin{equation}
+\alpha_i+\lambda\beta_j = \alpha+\lambda \beta
+\end{equation}
+This implies that $\lambda_{ij} = \frac{\alpha_i-\alpha}{\beta_j-\beta}$. Thus, Equation $(1)$ holds for exactly one value of $\lambda\in\C$ (for a fixed $i,j$) and at most one $\lambda\in\Q$. \\
+\\
+Now, choose $0\neq c\in\Q$ such that $\alpha_i+c\beta_j\neq \alpha + c\beta$, for every $1\leq i\leq n $, and every $2\leq j \leq m$. Such a $c$ always exists because there are only finitely many extensions. This choice is equivalent to choosing $0\neq c\in\lambda$ such that $c\neq \lambda_{ij}$ for all $i,j$. \\
+\\
+Now, let $\theta=\alpha+C\beta$. We will now show that $\Q(\alpha,\beta)=\Q(\theta)$. Note that $\theta=\alpha+c\beta\implies \theta\Q(\alpha,\beta)\implies \Q(\theta)\subseteq \Q(\alpha,\beta)$. It remains to show that backwards inclusion. \\
+\\
+If $\beta\in \Q(\theta)$, then $\alpha=\theta-c\beta\in\Q(\theta)$, so it suffices to show that $\beta\in\Q(\theta)$. Let $r(x)+p(\theta-cx)\in \Q(\theta)[x]$, and $r(\beta)=p(\theta-c\beta)=p(\alpha)=0$. So $\beta$ is a common root of $r(x)$ and $q(x)$. Let $t$ be another common root of $r(x)$ and $q(x)$. Then, $t\in\{\beta_j\}_{j=2}^m$. Now, for $2\leq j\leq m$, $r(\beta_j)=p(\theta-c\beta_k)$\\ \\
+\noindent So, if $0=r(\beta_j)$, then $0=p(\theta-c\beta_k)\implies \theta-c\beta_j\in\{\alpha\}_{i=1}^n$. Thus, $\beta$ is the only common root of $r(x)$ and $p(x)$. \\
+\\
+Let $h(x)$ be the minimum polynomial of $\beta$ over $\Q(\theta)$. This implies that $h(x)|r(x)$ and $h(x)|q(x)$, so $\beta$ is the only root of $h(x)$ in $\C$, so $deg(h(x))=1$, and in particular, $h(x)=x-\beta\in \Q(\theta)[x]$. This means we must have that $\beta\in\Q(\theta)$, and so we are done! 
+\end{proof}
+\noindent By induction, $\Q(\alpha_1,\cdots, \alpha_n\}=\Q(\theta)$. Thus, all algebraic number fields can be represented as $\Q(\theta)$ for some algebraic number $\theta$.
+\subsection{September 2, 2022}
+Recall, from last time, that all algebraic number fields can be represented by $\Q(\alpha)$ for some algebraic number $\alpha$.
+\begin{theorem}
+Every algebraic number $\theta$ is of the form $\frac{\alpha}{c}$ where $\alpha$ is an algebraic integer and $c\in \Q$. 
+\end{theorem}
+\begin{proof}
+Let $f(x)$ be the minimum polynomial of $\theta$, $deg(f)=n$. The coefficients of $f$ are rational. Let $c$ be the lowest common multiple of all the denominators of the $a_i$'s. Now, consider:
+$$g(x)=x^n+ca_{n-1}x^{n-1}+c^2a_{n-2}x^{n-2}+\cdots c^na_0$$
+Note the general term above is $c^ta_{n-t}x^{n-t}$. Now:
+$$g(c\theta) = c^n(\theta^n+a_{n-1}\theta^{n-1}\cdots ) = f(\theta)=0$$
+Note that $g(x)\in\Z[x]\implies c\theta$ is an algebraic integer, so let $\alpha=c\theta$. Then, $\theta=\frac{\alpha}{c}$ as desired.
+\end{proof}
+\begin{cor}
+Every algebraic number field can be represented by $\Q(\alpha)$ for some algebraic integer $\alpha$
+\end{cor}
+\begin{proof}
+We know every algebraic number field can be represented by $\Q(\theta)$, where $\theta$ is an algebraic number. But $\theta=\frac{\alpha}{c}$. where $c\in\Z$ and $\alpha$ is an algebraic integer, so $\Q(\theta)=\Q(\frac{\alpha}{c})=\Q(\alpha)$.
+\end{proof}
+\begin{example}
+Find the value of $\theta$ such that:
+$$\Q(\sqrt{2},\sqrt[3]{6}) = \Q(\theta)$$
+The minimum polynomial of $\sqrt{2}$ is $f(x)=x^2-2=(x-\sqrt{2})(x+\sqrt{2})$. The minimum polynomial of $\sqrt[3]{5}$ is $g(x)=x^3-5=(x-\sqrt[3]{5})(x-w\sqrt[3]{5})(x-w^2\sqrt[3]{5})$, where $w=-\frac{1}{2}+\frac{\sqrt{3}}{2}i$. Choose $c$ such that $\alpha_i+c\beta_j\neq \alpha+c\beta$ for any $i=1,2$, $j=2,3$. Choose $c=1$, and this works. So take $\theta=\alpha+c\beta = \alpha+\beta =\sqrt{2}+\sqrt[3]{5}$.\\
+\\
+The minimum polynomial of $\sqrt{2}+\sqrt[3]{5}$ can be left as an exercise, but turns out to be $f(x)=x^6-6x^2-10x^3+12x^2-60x+16$.
+\end{example}
+\begin{definition}
+Now, let $\alpha$ be an algebraic number with minimum polynomial of degree $n$. Then $$p(x)=\displaystyle\prod_{i=1}^nx-\alpha_i \in \Q[x]$$ where by the Lemma, all $\alpha_i$'s are distinct complex numbers. $\alpha=\alpha_1, \alpha_2,\alpha_3,\cdots, \alpha_n$ are called the \underline{conjugates} of $\alpha$.
+\end{definition}
+Then, we have $n$ field isomorphisms (embeddings):
+$$\sigma_i: \Q(\alpha)\rightarrow \Q(\alpha_i)$$
+with $\alpha\mapsto \alpha_i$.
+Note: These conjugate fields are independent of choice of $\alpha$. \\
+\\
+If $K=\Q(\alpha)=\Q(\beta)$, then $\exists$ $c_i\in\Q$ such that
+$$\beta = c_0+c_1\alpha + c_2\alpha^2+\cdots + c_{n-1}\alpha^{n-1}$$
+For $t=1,2,\cdots, n$, set
+$$\beta_t=c_0+c_1\alpha_1+c_2\alpha_2^2+\cdots + c_{n-1}\alpha_t^{n-1}=\sigma_i(\beta)$$
+Then the $\beta_i$'s are the conjugates of $\beta$ and $\Q(\alpha_t)=\Q(\beta_t)$, for every $t=1,2,\cdots, n$.
+\begin{definition}
+Let $S_n$ denote the symmetric group on $n$ letters. For any $\sigma\in S_n$ and $f\in\mathbb{F}[x_1,x_2,\cdots, x_n]$, where $\mathbb{F}$ is a field, define
+$$f^\sigma(x_1,x_2,\cdots, x_n)=f(x_{\sigma(1)},\cdots, x_{\sigma(n)})$$
+A polynomial $f$ is symmetric if $f^\sigma=f$, for every $\sigma\in S_n$
+\end{definition}
+\begin{example}
+$f(x_1,x_2,x_3)=x_1+x_2+x_3$ is symmetric. 
+\end{example}
+\begin{example}
+$f(x_1,x_2,x_3)=x_1+x_2x_3$. Then, if $\sigma = (1\ 2\ 3)$, $f^\sigma=x_2+x_3x_1$, so $f$ is not symmetric.
+\end{example}
+\begin{definition}
+The \underline{elementary symmetric polynomials} are defined as:
 
-\begin{definition}
-Let $f:X\rightarrow Y$, where $X$ and $Y$ are topological spaces. $f$ is continuous if the preimage of every open set is an open set,
+$$e_0(x_1,\cdots, x_n) = 1$$
+$$e_1(x_1,\cdots, x_n)=x_1+x_2+\cdots + x_n$$
+$$e_2(x_1,\cdots, x_n) = \displaystyle\sum_{1\leq i\leq j\leq n}x_ix_j$$
+$$e_n(x_1,\cdots, x_n)=x_1x_2\cdots x_n$$
 \end{definition}
-\begin{proposition}
-If $f:X\rightarrow Y$ and $g:Y\rightarrow Z$ are continuous maps, then $g\circ f$ is continuous.
-\end{proposition}
-\begin{proof}
-If $U$ is open in $Z$, then $g^{-1}(U)$ is open in $Y$. Since $f$ is continuous, $f^{-1}(g^{-1}(U))$ is open. Thus, $U$ open implying $(g\circ f)^{-1}(U)$ is open gives us that $g\circ f$ is continuous.
-\end{proof}
-\noindent \textbf{How should we construct topological spaces?}:
-\begin{definition}
-A \underline{basis} for a topology is a collection $\mathcal{B}$ of subsets of a set $X$ such that:
-\begin{itemize}
-    \item $X$is the union of the elements of $\mathcal{B}$
-    \item if $B_1,B_2\in\mathcal{B}$, then for every $x\in B_1\cap B_2$, there is a $B_3\in\mathcal{B}$ such that $x\in B_3\subseteq B_1\cap B_2$
-\end{itemize}
-We define the open sets as arbitrary unions of elements of $\mathcal{B}$.
-\end{definition}
-\noindent By the first property, $\emptyset, X\in \mathcal{B}$. Arbitrary unions are in the topology by definition. Now, suppose $B_1,B_2\in\mathcal{B}$, then $B_1\cap B_2=\displaystyle\bigcup_{x\in B_1\cap B_2} B_3(x)$, where $B_3$ is as prescribed in the second property. We then get by induction that finite intersections are in the topology.
+\begin{theorem}[Fundamental Theorem of Symmetric Polynomials]
+Every symmetric polynomial can be written uniquely as a polynomial expression (not necessarily symmetric) in the elementary symmetric polynomials. In other words, if $f(x_1,\cdots, x_n)\in\mathbb{F}[x_1,\cdots, x_n]$, is a symmetric polynomial, then there exists a $g$ such that $f(x_1,\cdots, x_n)=g(e_1(x_1,\cdots, x_n),\cdots, e_n(x_1,\cdots, x_n))$. $\mathbb{F}$ could just be a commutative ring that is not a field.
+\end{theorem}
+\newpage
+\subsection{September 7, 2022}
 \begin{example}
-Consider $\{(a,b)|a<b,\ a,b\in\R\}$. This forms a basis for the standard topology on $\R$. 
-\end{example}
-\begin{example}
-Consider $\{(a,b)|a<b\ a,b\in\Q\}$. This ALSO forms a basis for the standard topology on $\R$.
-\end{example}
-\begin{proposition}
-$f:X\rightarrow Y$ is continuous if the preimage of every basis element is open.
-\end{proposition}
-\begin{example}
-Consider $C[a,b]$. Consider the function $\phi:C[a,b]\rightarrow \R$ such that $\phi(f)=\int_a^b f(x)\ dx$ is continuous
-\end{example}
-\begin{example}
-Consider $L^p(\R)$, where $p\geq 1$. Consider $\phi:L^p(\R)\rightarrow \R$, where $\phi(f)=\int_{-\infty}^\infty (f(x))^p\ dx$. $\phi$ is continuous.
-\end{example}
-\begin{definition}
-Let $(X,\tau)$ be a topological space. Consider $Y\subseteq X$. We define $\tau_Y = \{U\cap Y|\ U\in \tau\}$ to be the subspace topology. The axioms for a topology are easily checked here.
-\end{definition}
-\begin{proposition}
-Let $(X,\tau)$ be a topological space. Let $\mathcal{B}$ be a family of subsets that satisfy the conditions of a basis. 
-If every element of $\mathcal{B}$ is open and if for every open set $U$ and every $x\in U$, there is $B\in\mathcal{B}$ such that $x\in B\subseteq U$, then $B$ is a basis for $\tau$ 
-\end{proposition}
-\begin{proof}
-For every $U\in \tau$, write $U=\displaystyle\bigcup_{x\in U} B(x)$, where $B$ is prescribed as above. 
-\end{proof}
-\begin{example}
-Consider $\{[a,b)|\ a<b, a,b\in\R\}$. This is the lower limit topology. Note that $[1,2)$ is not a union of open intervals, so this is not the standard one. 
-$$(a,b)=\displaystyle\bigcup_{n=1}^\infty [a+\frac{1}{n},b)$$
-\end{example}
-\begin{definition}
-$\tau'$ is finer than $\tau$ if $U\in \tau\implies U\in \tau'$. We say here that $\tau$ is coarser than $\tau'$. For instance, 
-the lower limit topology is finer than the standard topology.
-\end{definition}
-\begin{example}
-Consider $\mathcal{B}=\{V_n(a)|\ a\in\R^n, n>0\}$.
-\end{example}
-\begin{example}
-Consider $C[a,b]$. The basis consists of the sets:
-$$\{g|\ \sup_{x\in[a,b]} |f(x)-g(x)|<r\},\qquad f,g\in C[a,b],\ r>0$$
-\end{example}
-\begin{example}
-Consider $L^p(\R)$, for $p\geq 1$.The basis consists of the sets:
-$$\{g|\left(\int_{-\infty}^\infty |f-g|^p\ dx\right)^\frac{1}{p}<r\},\qquad f\in L^p(\R),\ n>0$$
-It is of note that these are great examples of Banach Spaces
-\end{example}
-\subsection{September 1, 2022}
-Consider the following diagram for the product topology:
-\begin{center}
-\begin{tikzcd}
-Z \arrow[rd, "f_\alpha"] \arrow[r, "f"] & \displaystyle\prod_{\alpha\in A} X_\alpha \arrow[d, "\pi_\alpha"] \\
-                                        & X_\alpha                                                         
-\end{tikzcd}
-\end{center}
-Note that $f_\alpha = \pi_\alpha\circ f$. $f$ is continuous iff $f_\alpha$ is continuous for all $\alpha$. We want each of the projections $\pi_\alpha$ to be continuous.\\
-\\
-Note that $\pi_\alpha^{-1}(U_\alpha)$ is open for every open $U_\alpha\subseteq X_\alpha$, because:
-$$\pi^{-1}(U_\alpha)=U_\alpha\times \displaystyle\prod_{\beta\neq \alpha}X_\beta$$
-Hence, a basis for this topology are sets of the form:
-$$U_{\alpha_1}\times U_{\alpha_2}\times\cdots\times U_{\alpha_n}\times\displaystyle\prod_{\beta\neq \alpha_i}X_\beta\qquad U_{\alpha_i}\in X_{\alpha_i}\text{ open}$$
-\begin{proposition}
-$f$ is continuous if and only if $f_\alpha$ is continuous for every $\alpha$.
-\end{proposition}
-\begin{proof}
-The forward direction is trivial. Since $\pi_\alpha$ is continuous, $f_\alpha=f\circ\pi_\alpha$ is a composition of continuous maps, and is thus continuous. Now, let $f_\alpha$ be continuous for every $\alpha$. We only need to check that the preimage of a basis element is an open set.
+Let $f(x_1,x_2)=x_1^3+x_2^3-7$ be symmetric. Let $g(x_1,x_2)=x_1^3-3x_1x_2-7$ be not symmetric. But then, we see that:
 \begin{align*}
-    f^{-1}\left(U_{\alpha_1}\times U_{\alpha_2}\times\cdots\times U_{\alpha_n}\times \displaystyle\prod_{\beta\neq \alpha_i}X_\beta\right) &= f^{-1}\left(\bigcap_{i=1}^n\left(U_{\alpha_i}\times\displaystyle\prod_{\beta\neq \alpha_i}X_\beta\right)\right)\\
-    &=\bigcap_{i=1}^n f^{-1}\left(U_{\alpha_i}\times\displaystyle\prod_{\beta\neq \alpha_i}X_\beta\right)\\
-    &=\bigcap_{i=1}^nf^{-1}_{\alpha_i}(U_{\alpha_i})
+    f(x_1,x_2)&=g(e_1(x_1,x_2)+e_2(x_1,x_2))\\
+    &=q(x_1,x_2)^3-3e_1(x_1,x_2)e_2(x_1x_2)-7
 \end{align*}
-This is open because the preimages of $U_\alpha$ by $f_\alpha$ are open, and finite intersections of open sets are open
-\end{proof}
-\begin{example}
-Consider $C[a,b]\subseteq\displaystyle\prod_{x\in[a,b]}\R$. This topology has as basis sets of the form:
-$$V_{f,x_1,\cdots, x_n,\epsilon}=\{g:\ |f(x_i)-g(x_i)|<\epsilon,\ i\in\N\}$$
-This is called the $\text{weak}^*$ topology on $C[a,b]$.
-\end{example}
-\begin{example}
-Consider $\R\times\R\rightarrow\R$. we can define this to have multiplication, addition, or division defined on $\R\times \R\setminus\{0\}$.
 \end{example}
 \begin{proposition}
-If $X$ is a topological space and $f,g:X\rightarrow \R$ (with maybe $g:X\rightarrow \R\setminus\{0\}$) are continuous functions, then $f+g, f\cdot g, \frac{f}{g}$ are continuous.
+Suppose $p(x)\in\Q[x]$ (monic) has roots $\alpha_1,\cdots,\alpha_n$, and any symmetric polynomial $f(x_1,\cdots, x_n))\in\Q[x_1,\cdots,x_n]$, then $f(\alpha_1,\cdots,\alpha_n)\in\Q$
 \end{proposition}
 \begin{proof}
-These are compositions of continuous functions. We consider:
-$$X\xrightarrow{(f,g)}\rightarrow \R\times\R\xrightarrow{+}\R$$
-The same happens for multiplication and division.
+$p(x)=\displaystyle\prod_{i=1}^n(x-\alpha_i)\in\Q[x]$, so $e_t(\alpha_1,\cdots, \alpha_n)\in\Q$, for every $1\leq t\leq n$. By the Fundamental Theorem of Symmetric Polynomials, there exists $g(x_1,\cdots, x_n)\in\Q[x_1,\cdots, x_n]$ such that $f(x_1,\cdots, x_n)=g(e_1(x_1,\cdots, x_n),\cdots, e_n(x_1,\cdots, x_n))$. So:
+$$f(\alpha_1,\cdots, \alpha_n)=g(e_1(x_1,\cdots, x_n),\cdots, e_n(x_1,\cdots, x_n))\in\Q$$
 \end{proof}
-\noindent\textbf{Disjoint Unions of Topological Spaces:}\\
-\\
-Consider $X_\alpha, \alpha\in A$, $X_\alpha\cap X_\beta=\emptyset$. We then denote the disjoint union as $\displaystyle\bigsqcup_{\alpha\in A}X_\alpha$. Consider the following diagram: 
-\begin{center}
-    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB12os40G6AnnBwCGMTgCMsAczgBHAMZM0AfWCdGaABZ1OWMAAIAggF8AGio0NtdECdLpMufIRQBGclVqMWbAJp2DiAY2HgERGRuXvTMrIggFlY2dl4wUNLwRKAAZgBOEAC2SABM1DgQSB7esWzZluyaOiDU-BIwDAAKTmGuILkyWjiBOflFiKUg5Uhkk3RYDGxaEBAA1sMgeYXTZRWIVTG+8dkpJkA
-\begin{tikzcd}
-\displaystyle\bigsqcup_{\alpha\in A}X_\alpha \arrow[r, "f"] & Y \\
-X_\alpha \arrow[ru, "f_\alpha"'] \arrow[u, hook]            &  
-\end{tikzcd}
-\end{center}
-Similarly as before, $f$ is continuous if and only if $f_\alpha$ is continuous for all $\alpha$. A topology consists of the sets that are unions of $U_\alpha$ where $U_\alpha$ are open in $X_\alpha$. If the $X_\alpha$'s are not disjoint, then we might run into trouble in the overlap!
-\\
-\\
-\noindent\textbf{Quotient Spaces}
-Consider a topological space $X$. Take $f:X\rightarrow Y$ to be a surjective function. THe open sets of $Y$ are of the form $f(U)$ where $U$ is open in $X$.\\
-\\
-Another perspective: Consider a topological space $X$. Take an equivalence relation on $X$. Denote by $\hat{x}$ the equivalence class of $x$. Let:
-$$Y=\{\hat{x}|\ x\in X\}$$
-Now, we consider the function $f:X\rightarrow Y$ where $f(x)=\hat{x}$., and we use the notation $X/\sim$ to represent this quotient space. Now, consider the following diagram:
-\begin{center}
-% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBoBGAXVJADcBDAGwFcYkQBNEAX1PU1z5CKMsWp0mrdgA0efEBmx4CRcqTE0GLNohAAtHuJhQA5vCKgAZgCcIAWyQAmGjghIyE7exMgajegBGMIwACgLKwiCMMJY4viBwABZYse68VrYOiGogru6akjoglvH+QaHhQuzWWCaJcenFmU4ubtkFXromADrdAMZY1n0ABCV+gcFhSlW6NXUNlNxAA
-\begin{tikzcd}
-X \arrow[d, "f"'] & Z \arrow[ld, "g"] \arrow[l, "g\circ f"'] \\
-Y                 &                                         
-\end{tikzcd}
-\end{center}
-We want $g$ to be continuous if and only if $g\circ f$ is continuous, and this is the reason for our construction of the quotient space.
-\begin{proposition}
-The above is a topology on $Y$.
-\end{proposition}
+\begin{theorem}
+Embeddings are independent of choice of $\alpha$. In other words, let $K=\Q(\alpha)$ be an algebraic number field, and $p(x)=\displaystyle\prod_{i=1}^n(x-\alpha_i)\in\Q$ be a minimum polynomial of $\alpha$ with $\alpha=\alpha_1$. The embeddings are $\alpha\rightarrow \alpha_i$. If $K=\Q(\beta)$ also, $\beta=c_0+c_1\alpha+c_2\alpha^2+\cdots +c_{n-1}\alpha^{n-1}$ because these powers from a basis for $K=\Q(\alpha)$. Let $\beta_i=\sigma_i(\beta)$ for $1\leq i\leq n$. Then, $\beta=\beta_1,\beta_2,\cdots, \beta_n$ are the conjugates of $\beta$ and $\Q(\alpha_i)=\Q(\beta_i)$ for every $1\leq i\leq n$.
+\end{theorem}
 \begin{proof}
-\begin{enumerate}[(a)]
-    \item $Y=f(x)$ is open, and $\emptyset=f(\emptyset)$ is open
-    \item $f(U_1\cap U_2\cap\cdots\cap U_n)$ is a finite intersection of $f(U_i)$'s, so this is open
-    \item If $f(U_\alpha)$ is open, for all $\alpha$, then it's easy to see that the images commute with the union, and so arbitrary unions are open.
-\end{enumerate}
-\end{proof}
-\begin{example}
-Take $f:\R\rightarrow\C$. This may not be a surjection, but it is certainly a surjection onto the image by construction. Let $f(x)=e^{2\pi ix}$. The image is $\{z:\ |z|=1\}=: S^1$ (the 1-dimensional sphere). We can induce a topology on $S^1$ by using the standard topology on $\R$, or by inducing from the topology on $\C$. The induced topology is the same as the quotient topology. This can be resolved by thinking of the standard convention where $S^1=\R/\Z$.
-\end{example}
-\begin{example}
-Consider $S^2$, the sphere in $\R^3$. Consider the inclusion of $S^2\subseteq \R^3$, and consider the induced topology on $S^2$.  We can consider two points on the sphere to be equivalent as follows:
-$$(x,y,z)\sim (x',y',z')\iff (x=x',y=y',z=z')\vee (x=-x',y=-y',z=-z')$$
-Let $\R P^2 = S^2/\sim$, and consider the quotient topology. This space is essentially a cap being put on top of a M\"obius band. By definition, this is the two-dimensional projective plane. Another way to construct $\R P^2$:\\
+Let
+\begin{align*}
+    f(x)&=\displaystyle\prod_{i=1}^n(x-\beta_i)\\
+    &=\prod_{i=1}^n(x-\sigma_i(\beta))\\
+    &=\prod_{i=1}^n(x-(c_0+c_1\alpha_i+c_2\alpha_i^2+\cdots +c_{n-1}\alpha_i^{n-1}))\\
+    &\in \underbrace{\Q(\alpha_1,\alpha_2,\cdots,\alpha_n)}_{K_1}[x]
+\end{align*}
+So $\Q\subseteq K\subseteq K_1\subseteq \C$. Now:
+\begin{align*}
+    p(x)&=\displaystyle\prod_{i=1}^n(x-\beta_i)\\
+    &=x^n-e_1(\beta_1,\cdots, \beta_n)x^{n-1}+\cdots + (-1)^ne_n(\beta_1,\cdots, \beta_n)
+\end{align*}
+Each $e_i(\beta_1,\cdots, \beta_n)$ will be symmetric in the $\alpha$'s. Thus, by the fundamental theorem, there exists $g(x_1,\cdots, x_n)\in\Q[x]$ such that $e_t(\beta_1,\cdots, \beta_n)= g_t(\alpha_1,\cdots, \alpha_n)$. From Proposition 3, we get that $g_t\in\Q$, so each $e_t\in\Q$, so $f(x)\in\Q[x]$.\\
 \\
-consider $\R^3\setminus\{(0,0,0)\}\subseteq \R^3$ using the standard topology. We take the following equivlence:
-$$(x,y,z)\sim (x',y',z')\iff \exists \lambda \neq 0:\ x=\lambda x', y=\lambda y', z=\lambda z'$$
-Then, $(\R^3\setminus\{(0,0,0)\})/\sim$ is exactly $\R P^2$. We can then generalize this construction to $\R P^n$ using the same procedure, but we can also have $\C P^n$ to be equivalence classes of points in $\C^{n+1}\setminus\{(0,0,\cdots,0)\}$, with the same equivalence as before, except now $\lambda\in \C$. For instance $\C P^1$ is the Riemann sphere. 
-\end{example}
-\begin{example}
-Consider the unit square with corners $(0,0), (0,1), (1,0), (1,1)$. We induce an equivalence relation by $(x,1)\sim (x,0)$ for every $x$, and $(1,y)\sim (0,y)$ for every $y$. This generates a torus. This comes from the induced topology from the inclusion into $\R^2$, so the torus is the quotient topology $\R^2/\Z^2$. The torus can also be described as $s^1\times S^1$.
-\end{example}
+S0 $f(x)=\displaystyle\prod_{i=1}^n (x-\beta_i)\in \Q[x]$. $f(\beta)=0$, so if $h(x)$ is the minimal polynomial for $\beta$, then $h|f$. But $deg(f)=n$ and $[\Q(\beta):\Q]=[\Q(\alpha):\Q]=n$, so $deg(h)=n$. Since $h$ and $f$ are monic of the same degree, we must have that $h=f$, so $f(x)$ is the minimum polynomial of $\beta$. But the conjugate fields are $\Q(\beta_i)\subseteq \Q(\alpha_i)$, and both are of degree $n$, so finally we get that $\Q(\beta_i)=\Q(\alpha_i)$.
+\end{proof}
+\newpage
+\subsection{September 9, 2022}
 \begin{definition}
-$f:X\rightarrow Y$ is a \underline{homeomorphism} if $f$ is continuous, invertible, and $f^{-1}$ is continuous. 
+Let $\mathcal{O}\subseteq \C$ be the set of all algebraic integers
+\end{definition}
+\begin{theorem}
+The following are equivalent:
+\begin{enumerate}[(a)]
+    \item $\alpha$ is an algebraic integer
+    \item The minimum polynomial of $\alpha$ is in $\Z[x]$.
+    \item $\Z[\alpha]$ is a finitely generated $\Z$-module. 
+    \item There exists a finitely generated $\Z$-submodule of $\C$, $M\neq \{0\}$ such that $\alpha M\subseteq M$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+$(a)\implies (b)$:\\
+\\
+Since $\alpha$ is an algebraic integer, there exists $f(x)\in\Z[x]$ monic such that $f(\alpha)=0$. Choose $p(x)$ of minimum degree from such $f(x)$'s. Then, $p(X)$ is irreducible over $\Z$\footnote{If not, there exists a lower degree polynomial of which $\alpha$ is a root, thus providing a contradiction}. Thus, $p(x)$ is irredcible over $\Q$ by Gauss' Lemma, and so $p(x)$ is the minimal polynomial of $\alpha$ over $\Q$. \\
+\\
+$(b)\implies (c)$:
+$$\Z[\alpha]=\{f(x):\ f(x)\in\Z[x]\}$$
+Now, $\Z[\alpha]$ is generated by $\{1,\alpha,\cdots,\alpha^{n-1}\}$, where $deg_\Q\alpha = n$. Let $f(x)$ be the polynomial of $\alpha$. Then:
+\begin{align*}
+    0 &= f(\alpha)=\displaystyle\sum_{i=0}^n a_i\alpha^i\\
+    &\implies \alpha^n\in \text{Span}(\{1,\alpha,\cdots, \alpha^{n-1}\})
+\end{align*}
+By induction, $\alpha^N\in \text{Span}(\{1,\alpha,\cdots, \alpha^{n-1}\})$, for every $N\geq n$. So $\Z[\alpha]\subseteq \text{Span}_\Z)\{1,\alpha,\cdots, \alpha^{n-1}\})$. The reverse inclusion is obviously true, so we get equality, and thus we have as desired that $\Z[\alpha]$ is a finitely generated $\Z$-module.\\
+\\
+$(c)\implies (d)$:\\
+\\
+Let $M=\Z[\alpha]$. Then, trivially, $\alpha M\subseteq M$.\\
+\\
+$(d)\implies (a):$\\
+\\
+Let $M$ be a finitely generated $\Z$-submodule of $\C$ such that $\alpha M\subseteq M$. Let:
+$$M=\Z x_1+\Z x_2+\cdots + \Z x_n$$
+In other words, the $x_1,\cdots x_n$'s are the generators. Each $x_i\in M$, so $\alpha x_i\in M$ by $(c)$. Now, let:
+$$\alpha x_i = \displaystyle\sum_{j=1}^n c_yx_j$$
+for $1\leq j\leq n$, $C_y\in \Z$. Let $C=(C_y)$ as an $n\times n$ matrix. So:
+\begin{align*}
+    &(C-\alpha I)\begin{pmatrix} x_1\\ \vdots \\ x_n\end{pmatrix}=0\\
+    &\implies \text{det}(C-\alpha I)=0
+\end{align*}
+The above follows because the vector $(x_1,\cdots, x_n)^top$ is non-zero. Now, let $f(x)=(-1)^n \text{det}(C-\lambda I)$. We then get that $f(\alpha)=0$. Also, $f(x)$ is monic in $\Z[x]$ because $c_{ij}\in\Z$. Thus, $\alpha$ is an algebraic integer.
+\end{proof}
+\begin{proposition}
+$\mathcal{O}$ is a ring.
+\end{proposition}
+\begin{proof}
+Let $\alpha,\beta$ be algebraic integers of degrees $n$ and $m$. We want to show that $\alpha\pm \beta$ and $\alpha\beta$ are also algebraic integers, essentially amounting to the Subring Test. \\
+\\
+So, $1,\alpha,\cdots, \alpha^{n-1}$ generate $\Z[\alpha]$ and $1,\beta,\cdots, \beta^{n-1}$ generate $\Z[\beta]$ as $\Z$-modules. Then, $\alpha^i\beta^j$ span $\Z[\alpha,\beta]$, for $1\leq i\leq n$, $1\leq j\leq m$. Thus, $M=\Z[\alpha,\beta]$ is a finitely generated submodule of $\C$, non-zero , and noting that $(\alpha\pm \beta)M\subseteq M$, and $\alpha\beta M\subseteq M$, and thus $\alpha\pm \beta$ and $\alpha\beta$ are algebraic integers.
+\end{proof}
+\begin{definition}
+Let $K$ be an algebraic number field. Then define $\mathcal{O}_K=\mathcal{O}\cap K$ to be the set of all algebraic integers in $K$.
+\end{definition}
+\begin{cor}
+$\mathcal{O}_K$ is a ring.
+\end{cor}
+\begin{proof}
+This is the intersection of two rings.
+\end{proof}
+\noindent We have seen that $\mathcal{O}_\Q = \Z$. Also, $\mathcal{O}_{\Q(i)}=\Z[i]$.
+\begin{definition}
+Let $K$ be an algebraic number field of degree $n$. Let $\omega_1,\omega_2,\cdots, \omega_n\in K$. Let $\sigma_i$ for $1\leq i\leq n$ denote the $n$ distinct embeddings of $K$. For $j=1,\cdots, n$, let:
+$$\omega_j^{(i)}=\sigma_i(\omega_j)$$
+Then, the \underline{discriminant} of $\omega_1,\cdots, \omega_n$ is denoted $D(\omega_1,\cdots, \omega_n)$ (or sometimes $\Delta(\omega_1,\cdots, \omega_n)$, and is computed as:
+$$D(\omega_1,\cdots, \omega_n)=(\text{det}(\sigma_i(\omega_j))_{ij})^2$$
+\end{definition}
+\subsection{September 12, 2022}
+Let $\alpha_1,\cdots, \alpha_n$ and $\beta_1,\cdots , \beta_n$ be two bases for $K$. Let:
+$$\beta_j=\displaystyle\sum_{i=1}^nc_{ij}\alpha_i$$
+for some $c_{ij}\in\Q$. Let $C=(c_{ij})_{ij}$, for $1\leq i,j\leq n$. Consider:
+\begin{align*}
+    (\sigma_i(\beta_j))_{ij}&=(\sigma_i\left(\sum_{k=1}^nc_{kj}\alpha_k\right))_{ij}\\
+    &=\left(\sum_{k=1}^nc_{kj}\sigma_i(\alpha_k)\right)_{ij}\\
+    &=\left(\sum_{k=1}^n\sigma_i(\alpha_k)c_{kj}\right)_{ij}\\
+    &=(\sigma_i(\alpha_j))_{ij}C
+\end{align*}
+\begin{align*}
+    D(\beta_1,\cdots , \beta_n)&=(\text{det}(\sigma_i(\beta_j)_{ij}))^2\\
+    &=(\text{det}(\sigma_i(\alpha_j)_{ij}))^2(\text{det} C)^2\\
+    &=D(\alpha_1,\cdots ,\alpha_n)(\text{det} C)^2
+\end{align*}
+We define, for $\alpha\in K$:
+$$D(\alpha)=D(1,\alpha, \cdots ,\alpha^{n-1})$$
+So:
+$$D(\alpha)=\underbrace{\left[ \prod_{1\leq i\leq j\leq n} (\alpha^j-\alpha^i)\right]^2}_{\text{Vandermonde Determinant}}$$
+\begin{example}
+Suppose $K=\Q(\sqrt{d})$, where $d$ is square-free. The minimum polynomial of $\sqrt{d}$ over $\Q$ is:
+$$p(x)=x^2-d = (x-\sqrt{d})(x+\sqrt{d})$$
+Considering the embedding $\sigma_1: Id$, $\sigma_2: \sqrt{d}\mapsto -\sqrt{d}$, we get:
+$$D(\sqrt{d})=D(1,\sqrt{d})=\left|\begin{array}{cc}
+    1 & \sqrt{d} \\
+    1 & -\sqrt{d}
+\end{array}\right|^2=(-\sqrt{d}-\sqrt{d})^2=4d$$
+Also, $n=2$, so:
+$$D(\alpha)=\prod_{1\leq i\leq j\leq n}(\alpha^j-\alpha_i)^2 = (-\sqrt{d}-\sqrt{d})^2=4d$$
+\end{example}
+\begin{example}
+Let $K=\Q\sqrt[3]{2}$. We get a minimum polynomial using the primitive cube roots of unity where $w=-\frac{1}{2}+\frac{\sqrt{3}}{2}i$.
+\begin{align*}
+    D(\alpha)&=\prod_{1\leq i\leq j\leq n}(\alpha^j-\alpha^i)^2\\
+    &=[(w^2\sqrt[3]{2}-w\sqrt[3]{2})(w^2\sqrt[3]{2}-\sqrt[3]{2})(w\sqrt[3]{2}-\sqrt[3]{2})]^2\\
+    &=-108
+\end{align*}
+\end{example}
+\noindent Note that $D(w_1,\cdots ,w_n)=(\text{det}((\omega_j^{(i)})_{ij}))^2$ is a symmetric function of the $w$'s.
+\begin{theorem}
+Let $K$ be an algebraic number field, and $w_i\in K$.
+\begin{enumerate}[(a)]
+    \item $D(w_1,\cdots, w_n)\in\Q$.
+    \item If $w_1,\cdots, w_n\in \mathcal{O}_K$, then $D(w_1,\cdots ,w_n)\in\Z$
+    \item $D(w_1,\cdots, w_n)\neq 0$ if and only if $w_1,\cdots, w_n$ are linearly independent.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(a):}\\
+\\
+$K=\Q(\theta)$ for some algebraic number $\theta$. So a basis for $K$ is $1,\theta, \cdots ,\theta^{n-1}$ where $\text{deg}_\Q K=n$. So:
+$$w_j=c_{0j}+c_{1j}\theta+ \cdots + c_{n-1,j}\theta^{n-1}$$
+\begin{align*}
+    D(w_1,\cdots ,w_n)&=(\text{det}((w_k^{(i)})_{ij}))^2\\
+    &=(\text{det}\left(\sum_{t=0}^{n-1}c_{ij}\theta^t\right))^2
+\end{align*}
+This is symmetric in $\theta_1,\theta_2,\cdots ,\theta_n$. Since permuting $\theta$'s just permutes the rows of the matrix, let:
+\begin{align*}
+    f(x_0,\cdots ,x_{n-1})=(\text{det}\left(\sum_{t=0}^{n-1}c_{ij}x^t\right))^2\\
+    &\in \Q[x_0,\cdots ,x_{n-1}]\\
+\end{align*}
+By Proposition 3, we get that $D(w_1,\cdots , w_n)=f(\theta_1,\cdots ,\theta_n)\in\Q$.\\
+\\
+\textbf{(b):}\\
+\\
+By part $(a)$, $D(w_1,\cdots , w_n)\in\Q$, but if $w_1,\cdots , w_n\in\mathcal{O}$, then we have by definition that $D(w_1,\cdots ,w_n)\in\mathcal{O}$, since $\mathcal{O}$ is a ring. Thus, $D(w_1,\cdots ,w_n)=\Q\cap \mathcal{O} = \Z$\\
+\\
+\textbf{(c):}\\
+\\
+For the forward direction, we prove this by the contrapositive. In other words, if $w_1,\cdots ,w_n$ are not linearly independent, then $D(w_1,\cdots ,w_n)=0$. Let $w_1,\cdots ,w_n$ be linearly dependent. Then, $\exists c_1,\cdots ,c_n$ not all zero, from $\Q$ such that $\displaystyle\sum_{i=1}^nc_iw_i=0$. Applying the embeddings of $K$, we get:
+$$c_iw_i^{(i)}+c_2w_2^{(i)}+\cdots +c_nw_n^{(i)}=0$$
+We know the induced matrix has a non-zero solution for $\vec{c}-(c_1,\cdots ,c_n)^\top$ in $\Z$. Thus, the induced matrix is NOT invertible, so its determinant is 0. Thus, $D(w_1,\cdots ,w_n)=0^2=0$, so we have the proof of the forward direction by the contrapositive.\\
+\\
+Now, for the converse, let $w_1,\cdots ,w_n$ be linearly independent. Then, these form a basis for $K$ over $\Q$. Let $K=\Q(\theta)$. Then, $1,\theta,\cdots, \theta^{n-1}$ is also a basis for $K$. Thus, there exists a change of basis matrix $C\neq 0$ such that:
+$$D(1,\theta,\cdots, \theta^{n-1})=(\text{det}(C))^2D(w_1,\cdots, w_n)$$
+However, we are more familiar with the left side by the Vandermonde Determinant, where:
+$$D(1,\theta,\cdots, \theta^{n-1})=\displaystyle\prod_{1\leq i\leq j\leq n}(\theta^{(j)}-\theta^{(i)})^2$$
+Here, $\theta^{(i)}=\sigma_u(\theta)$ is the $i^{th}$ conjugate of $\theta$, and all the conjugates are distinct. Thus, we get that this discriminant is nonzero. Thus, $D(w_1,\cdots, w_n)\neq 0$
+\end{proof}
+\newpage
+\section{Integral Bases}
+\subsection{September 14, 2022}
+\begin{definition}
+Let $K$ be an algebraic number field. A $\Z$-basis for $\mathcal{O}_K$ is called an \underline{integral basis for $K$} (but really for $\mathcal{O}_K$.
+\end{definition}
+\begin{proposition}
+Every $\Z$-basis for $\mathcal{O}_K$ is a $\Q$ basis for $K$. 
+\end{proposition}
+\begin{proof}
+Let $w_1,\cdots w_t$ be a $\Z$ basis for $\mathcal{O}_K$. Let $\theta\in K$ be an algebraic number. Then, $\theta=\frac{\alpha}{m}$, where $\alpha\in\mathcal{O}_K$ is an algebraic integer, and $m\in\Z$. This implies that, uniquely, $\alpha=\displaystyle\sum_{i=1}^tc_iw_i$, for $c_i\in\Z$. Then, $\theta\in Spqn_\Q(w_1,\cdots, w_t)\implies K\subseteq Span_\Q(w_1,\cdots, w_t)\implies Span_\Q(w_1,\cdots, w_t)=K$. Suppose $w_1,\cdots, w_t$ was linearly dependent over $\Q$. Then, there exists $q_1,\cdots, q_t$ not all zero such that the finite linear combination sums to 0. Then, we can multiply by $n\in\Z$ to get this linear combination to sum to 0, which then, by the linear independence over $\Z$, gives rise to an obvious contradiction which then shows us that $w_1,\cdots, w_t$ is linearly independent over $\Q$, and so must be a $\Q$ basis for $K$. Combined with a counting argument where the sizes of these two bases are the same, we get our desired result.
+\end{proof}
+\noindent Note: Not all bases of $K$ will be integral bases.
+\begin{example}
+$K=\Q(\sqrt{5})$ has a basis $1,\sqrt{5}$. The minimum polynomial is $x^2-5$ which has degree 2. However, the above basis is NOT an integral basis. $\frac{1+\sqrt{5}}{2}\in\air$ has minimum polynomial $x^2-x-1\in\Z[x]$, but this is NOT in the span of the basis over $\Z$. However, $\{1,\frac{1+\sqrt{5}}{2}\}$ is an integral basis, where $\air =\Z\left[\frac{1+\sqrt{5}}{2}\right]$.
+\end{example}
+\noindent In general, if $K=\Q(\alpha)$, a basis $\{1,\alpha,\cdots, \alpha^{n-1}\}$ is not necessarily an integral basis. $\Z[\alpha]\subseteq \air$, but $\air\not\subseteq \Z[x]$ in general.
+\begin{theorem}
+Every number field $K$ has an integral basis.
+\end{theorem}
+\begin{proof}
+Let $K=\Q(\alpha)$, where $\alpha$ is an algebraic integer. $\{1,\alpha,\cdots, \alpha^{n-1}\}$ is a basis for $K/\Q$, $deg_\Q K=n$. Now, $D(\alpha)>0 \in\Z$, because $\{1,\alpha,\cdots, \alpha^{n-1}\}$ is a linearly independent set in $\air$. Now, we select a basis $\{w_1,\cdots, w_n\}$ of $K$ from $\air$, such that $D(w_1,\cdots, w_n)$ is minimal. We'll now show that this is an integral basis. \\
+\\
+Suppose otherwise. There then exists $w\in\air$ such that $w=\displaystyle\sum_{i=1}^n a_iw_i$ such that $a_i\in\Q$ and there is at least one $a_i\in \Q\setminus \Z$. Without loss of generality, assume $a_1\in \Q\setminus \Z$. We write $a_1=a+r$, where $a\in\Z$ and $r\in \Q\setminus \Z$, $0<r<1$. Define $\phi_1=w-aw_1$, $\phi_i=w_i$ otherwise. Then, by construction, $\{\phi_1,\phi_2,\cdots, \phi_n\}$ is also a $\Q$-basis for $K$,where $\phi_i\in\air$. Now, we consider a change of basis matrix $C$ such that $\Phi=CW$. Then:
+$$C=\left|\begin{array}{ccccc}
+   a_1-a  & a_2 & a_3 &\cdots &a_n \\
+   0  & 1 & 0 &\cdots &0\\
+   0 & 0 & 1 & \cdots &0\\
+   \vdots & \vdots &\vdots &\ddots &\vdots\\
+   0 & 0 & 0 & \cdots & 1
+\end{array}\right|$$
+Thus, $\text{det}(C)=a_1-a=r$, and $D(\phi)=r^2D(w)$, where $0<r<1$, but this leads to a contradiction, as this gives $D(\phi)<D(w)$, a contradiction to $D(w)$ being minimal.
+\end{proof}
+\begin{theorem}
+Let $\alpha_1,\cdots, \alpha_n$ be a basis for $K$ over $\Q$. If $D(\alpha_1,\cdots, \alpha_n)$ is square free, then $\{\alpha_1,\cdots, \alpha_n\}$ is an integral basis.
+\end{theorem}
+\begin{proof}
+Let $\beta_1,\cdots \beta_n$ be an integral basis for $K$. Then there exist $c_{ij}\in\Z$ such that $\alpha_i=\displaystyle\sum_{j=1}^n c_{ij}\beta_j$ for all $1\leq \leq n$ because $\alpha_i\in\air$. Now, Let $C=(c_{ij})$. So:
+$$\underbrace{D(\alpha_1,\cdots, \alpha_n)}_{\in\N}=\underbrace{(\text{det}(C))^2}_{\in\Z}\underbrace{D(\beta_1,\cdots, \beta_n)}_{\in\Z}$$
+We note that since the left side is square free, $\text{det}(C)=\pm 1$, so $C$ is invertible over $\Z.$ This in turn implies that $C$ is an integral change of basis matrix.
+\end{proof}
+\begin{remark}
+The converse is false.
+\end{remark}
+\begin{example}
+If $K=\Q(i)$, then $\air = \Z[i]$. We have a basis $\{1,i\}$ with nontrivial embedding $i\mapsto -i$, and minimal polynomial $x^2+1=(x-i)(x-(-i))$. $D(1,i)=4$ is not square free, but $\{1,i\}$ is an integral basis.
+\end{example}
+
+\begin{remark}
+For two integral bases $\{\alpha_1,\cdots,\alpha_n\}$ and $\{\beta_1,\cdots,\beta_n\}$, we always get that their discriminants are the same. In other words, the discriminant of an integral basis is independent of choice of basis. 
+\end{remark}
+\begin{definition}
+The \underline{discriminant of $K$}, denoted $D_K,\Delta_K$ is exactly the discriminant mentioned in Remark 2.
 \end{definition}
 \begin{example}
-$([0,1]\times [0,1])/\sim$ is homeomorphic to $S^1\times S^1$, where $\sim$ is the equivalence relation defined in Example 11.
+$K=\Q(\sqrt{5})$ has basis $\{1,\sqrt{5}\}$, but we saw that this is not an integral basis in Example 9. So what IS an integral basis here? We have from Example 9, without proof, that $\left\{1,\frac{1+\sqrt{5}}{2}\right\}$ is an integral basis.
+\begin{align*}
+    D\left(1,\frac{1+\sqrt{5}}{2}\right)&=\left|\begin{array}{cc}
+        1 & \frac{1+\sqrt{5}}{2} \\
+        1 & \frac{1-\sqrt{5}}{2}
+    \end{array}\right|^2\\
+    &=\left(\frac{1-\sqrt{5}}{2}-\frac{1+\sqrt{5}}{2}\right)^2=5
+\end{align*}
+$5$ is square free, so this is an integral basis.
 \end{example}
+\begin{definition}
+Let $K$ be a number field with $\Q$ basis $\{w_1,\cdots, w_n\}$. Let $\alpha\in K$ and let $\alpha w_i=\displaystyle\sum_{j=1}^na_{ij}w_j$, for all $1\leq i\leq n$, and $a_{ij}\in\Q$. Let $A=(a_{ij})$ be an $n\times n$ matrix.
+We define the \underline{trace of $\alpha$}, $Tr_K(\alpha)$ such that $Tr_K(\alpha)=Tr(A)$, and the \underline{norm of $\alpha$}, $N_K(\alpha)$ as $N_K(\alpha)=\text{det}(A)$.
+\end{definition}
 \begin{example}
-Consider $[1,2],[3,4]\subseteq \R$ with the induced topology. Then, take the disjoint union $[1,2]\sqcup [3,4]$. Then, we take the quotient where $1\sim 2 \sim 3\sim 4$. This gives us a figure 8, where the circles touch at $\{1,2,3,4\}$. 
-\end{example}
-\begin{example}
-Let $X$ be a topological space. Consider $[-1,1]$ with the induced topology. Consider $X\times [-1,1]$ with the product topology. We then consider $(x,1)\sim (y,1)$ and $(x,-1)\sim (y,-1)$ for every $x$ and $y$, and take the quotient topology. This then gives a two-sided cone with a circular middle, called the suspension $\Sigma X$. 
-If we consider $S^n$, then $\Sigma S^n\cong S^{n+1}$.
+Consider $K=\Q(\sqrt{d})$, where $d$ is square-free integer. This has a basis $\{1,\sqrt{d}\}$. Let $\alpha=a+b\sqrt{d}$, $a,b\in\Q$.
+$$\alpha w_1=(a+b\sqrt{d})=a\cdot 1 + b\cdot \sqrt{d}$$
+$$\alpha w_2=(a+b\sqrt{d})(\sqrt{d})=(bd)\cdot 1 + a\cdot\sqrt{d}$$
+So:
+$$A_\alpha = \begin{pmatrix}a & b\\ bd & a\end{pmatrix}$$
+This gives us that $Tr(\alpha)=2a$, $N(\alpha)=a^2-db^2$.
 \end{example}
 \newpage
-\subsection{September 6, 2022}
-Thus far, as a recap, we have covered the following constructions:
-\begin{itemize}
-    \item Induced Topology
-    \item Product Topology
-    \item Disjoint Sum
-    \item Quotients
-\end{itemize}
-We now discuss metric spaces.
-\begin{definition}
-A distance on a set $X$ is a function $d:X\times X\rightarrow [0,\infty)$ such that:
-\begin{enumerate}[(a)]
-    \item $d(x,y)=0\iff x=y$
-    \item $d(x,y)=d(y,x)$
-    \item $d(x,z)\leq d(x,y)+d(y,z)$
-\end{enumerate}
-\end{definition}
-A metric is then another word we use instead of ``distance". $(X,d)$ is thus termed a metric space.
-\begin{example}
-$(\R^n,d)$, where $d(\vec{x},\vec{y})=\sqrt{\displaystyle\sum_{i=1}^n(x_i-y_i)^2}$ 
-\end{example}
-\begin{example}
-$(\R^n,d)$, where $d(\vec{x},\vec{y})=\displaystyle\max_{1\leq i \leq n}{|x_i-y_i|}$
-\end{example}
-\begin{example}
-$([0,1]^A,d)$, where $(x_\alpha)_\beta,(y_\alpha)_\beta\in\displaystyle\prod_{\beta\in B}[0,1]$, and:
-$$d((x_\alpha)_\alpha,(y_\alpha)_\alpha)=\sup_\alpha{|x_\alpha-y_\alpha|}$$
-\end{example}
-A basis for the topology induced by the metric consists of the balls (for $x\in X$ and $\epsilon >0$):
-$$B(x,\epsilon)=\{y|d(x,y)<\epsilon\}$$
-We now prove that these open balls form a basis.
+\begin{lemma}
+Let $K$ be a number field, If $\alpha\in\air$, then $Tr_K(\alpha),N_K(\alpha)\in\Z$
+\end{lemma}
 \begin{proof}
-First, we must check that these cover the entire space. However, it is clear that $X=\displaystyle\bigcup_{x\in X}B(x,\epsilon)$. For another condition, we see that if $B_1=B(x_1,\epsilon_1)$ and $B_2=B(x_2,\epsilon_2)$ are elements of the basis, and if $x\in B_1\cap B_2$, we have to show that there is a $B_3=B(x_3,\epsilon_3)$ such that $x\in B_3\subseteq B_1\cap B_2$. We can construct this geometrically such that we pick $x=x_3$ and $\epsilon_3 <\min{(\epsilon_1-d(x,x_1),\epsilon_2-d(x,x_2))}$. Then, if $y\in B_3$, we have that:
+Let $w_1,\cdots, w_n$ be a basis $\Q$-basis for $K$. Let $\alpha w_i=\displaystyle\sum_{j=1}^na_{ij}w_j$, for every $1\leq i\leq n$, $a_{ij}\in\Q$. Then, let $A=(a_{ij})$.
+\\
+\\
+Let $\sigma_1,\cdots, \sigma_n$ be the embeddings of $K$. Take $\sigma_k$ of $\alpha w_i$.
 \begin{align*}
-    d(y,x_1)&<d(y,x)+d(x,x_1)\\
-    &<\epsilon_3 + d(x,x_1)\\
-    &<\epsilon_1-d(x,x_1)+d(x,x_1)\\
-    &=\epsilon_1
+    &\sigma_k(\alpha w_i) = \sigma_k\left(\sum_{j=1}^n a_{ij} w_j\right)\\
+    \implies &\sigma_k(\alpha)\sigma_k(w_i) =\sum_{j=1}^n a_{ij}\sigma_k(w_j)\\
+    \implies &\sum_{j=1}^n \delta_{jk}\sigma_j(\alpha)\sigma_j(w_i)=\sum_{j=1}^n a_{ij}\sigma_k(w_j)\\
 \end{align*}
-Thus, $y\in B_1$, and by the exact same argument, $y\in B_2$, so we have indeed proven that this does form a basis.
+Now, define:
+$$A_0 = (\delta_{ij}\sigma_i(\alpha))_{ij}$$
+$$M= (\sigma_j(w_i))_{ij}$$
+We note that $0\neq D(w_1,\cdots, w_n) = \text{det}(M^T)^2 = \text{det}(M)^2 \implies M$ is invertible.\\
+\\
+$$AM=\left(\sum_{k=1}^n a_{ik}\sigma_j(w_k)\right)_{ij}$$
+$$MA_0 = \left(\sum_{k=1}^n\sigma_k(w_i)\delta_{jk}\sigma_k(\alpha)\right)_{ij}$$
+Thus, by the above, we get that $AM=MA_0\implies A_0 = M^{-1}AM\implies \text{det}A_0=\text{det} A$ (and their traces are equal). Thus, the trace is the sum of the $\sigma_i(\alpha)'s$ and the norm ia the product. This gives us that the trace and norm of $\alpha$ are independent of choice of basis.
 \end{proof}
-We now note that open sets are unions of balls.
-\begin{example}
-On $\R^n$, the standard metric and the max metric from Examples 17 and 18 induce the same topology.
-\end{example}
-\begin{proposition}
-If two metrics have the property that for every ball of the first and every element of it, there is a ball of the second topology centered at this element and included in the first ball, then the second topology is finer than the first.
-$$x\in B'(x,\epsilon')\subseteq B(y,\epsilon),\qquad \forall x\in B(y,\epsilon)$$
-\end{proposition}
-\noindent In Example 20, a disc can be written as a union of squares, and vice versa.
-\begin{example}
-If $(X,d)$ is a metric space, define:
-$$\overline{d}(x,y)=\min{(d(x,y),1)}$$
-Then, $\overline{d}$ is a metric that induces the same topology. \\
-\\
-We first check that $\overline{d}$ is a metric by ensuring that it satisfies the triangle inequality. If $d(x,y),d(y,z),d(x,z)<1$, then:
-\begin{align*}
-    \overline{d}(x,z)&=d(x,z)\\
-    &\leq d(x,y) + d(y,z)\\
-    &=\overline{d}(x,y)+\overline{d}(y,z)
-\end{align*}
-We have a similar case where $d(x,y)$ or $d(y,z)>1$, because we then have $1\leq \overline{d}(x,y)+\overline{d}(y,z)$ holds. Finally, if $d(x,y),d(y,z)<1$, and $d(x,z)>1$, then:
-$$\overline{d}(x,z)\leq d(x,z)<d(x,y) + d(y,z)=\overline{d}(x,y)+\overline{d}(y,z)$$
-\end{example}
-\begin{theorem}
-If $(X,d)$, $(Y,d')$ are metric spaces, then $f:X\rightarrow Y$ is continuous at $x\in X$ if $\forall \epsilon >0$, $\exists \delta >0$ such that $f(B(x,\delta))\subseteq B(f(x),\epsilon)$.
-\end{theorem}
-\begin{definition}
-$f:X\rightarrow Y$ is called uniformly continuous if $\forall \epsilon >0$, $\exists \delta >0$ such that if $d(x,y)<\delta$, then $d'(f(X),f(y))<\epsilon$.
-\end{definition}
-\begin{definition}
-A sequence $(x_n)_{n\geq 1}$ in the metric space $(X,d)$ is called Cauchy if $\forall \epsilon >0$, there exists an $N\in\N$ such that for all $m,n\geq N$, $d(x_m,x_n)<\epsilon$.
-\end{definition}
-\begin{definition}
-A metric space is called \underline{complete} if every Cauchy sequence is convergent.
-\end{definition}
-\begin{definition}
-A \underline{normed vector space} $V$ is a vector space endowed with a function
-$\|\cdot \|: V\rightarrow [0,\infty)$ such that:
-\begin{enumerate}[(a)]
-    \item $\|x\|=0 \iff x=0$
-    \item $\|\lambda x\|=|\lambda| \|x\|,\qquad \lambda\in \R\vee \C$
-    \item $\|x+y\|\leq \|x\|+\|y\|$
-\end{enumerate}
-We define $d(x,y)=\|x-y\|$.
-\end{definition}
-\begin{definition}
-A \underline{Banach space} is a complete normed vector space.
-\end{definition}
-\begin{example}
-$C[0,1]$, $L^p$ spaces, Sobolev spaces, Hardy spaces, Bergman spaces.
-\end{example}
 \newpage
-\noindent \textbf{Manifolds:}
-\begin{definition}[Veblen]
-A manifold $M$ is a Hausdorff topological space endowed with an onto function $$f:\displaystyle\bigsqcup_{\alpha\in A} U_\alpha\rightarrow M$$ such that for every $\alpha$, $U_\alpha$ is an open set in some $\R^n$, where $n$ is the same for all $\alpha$, and $f|U_\alpha$ is a homeomorphism onto the image for each $\alpha$. 
-\end{definition}
-We can define charts here as something of the form:
-$$f_\alpha = f|U_\alpha: U_\alpha\rightarrow f(U_\alpha)\subseteq M$$
-A collection of charts is then an atlas. Also, we get compositions where:
-$$f_\beta^{-1}\circ f_\alpha: U_\alpha\rightarrow U_\beta$$
+\begin{proposition}
+Let $K=\Q(\alpha)$, $\alpha\in\mathcal{O}$. Let $p(x)$ be the minimum polynomial of $\alpha$ of degree $n$. Then, $D(\alpha)=(-1)^{{{n}\choose{2}}} N_K(p'(\alpha))$
+\end{proposition}
+\begin{proof}
+By the Vandermonde Determinant, $D(\alpha)=\displaystyle\prod_{1\leq i\leq j\leq n}(\alpha^{(j)}-\alpha^{(i)})^2$. On the left, we have:
+$$p(x)=\prod_{i=1}^n (x-\sigma_i(\alpha))$$
+$$p'(x)=\sum_{j=1}^n \prod_{i\neq j} (x-\sigma_i(\alpha)) =\sum_{j=1}^n \prod_{i\neq j} (x-\alpha^{(i)})$$
+$$\implies p'(\alpha^{(k)}) = \sum_{j=1}^n \prod_{i\neq j} (\alpha^{(k)}-\alpha^{(i)})=\prod_{i\neq k}(\alpha^{(k)}-\alpha^{(i)})$$
+\begin{align*}
+    N(p'(\alpha))&=\prod_{j=1}^n \sigma_j(p'(\alpha))\\
+    &=\prod_{j=1}^n p'(\alpha^{(j)})\\
+    &=\prod_{j=1}^n\prod_{i\neq j} (\alpha^{(j)}-\alpha^{(i)})\\
+    &=\prod_{1\leq i < j\leq n} (-1)^s(\alpha^{(j)}-\alpha^{(i)})^2\\
+    &=(-1)^sD(\alpha)\qquad s={{n}\choose {2}}
+\end{align*}
+\end{proof}
+\begin{proposition}
+If $\{\alpha_1,\cdots, \alpha_n\}$ is a basis for $K$ over $\Q$, where $K$ is a number field, then:
+$$D(\alpha_1,\cdots, \alpha_n)=\text{det}[(Tr_K(\alpha_i\alpha_j))_{ij}]\in M_n(\Q)$$
+\end{proposition}
+\begin{proof}
+$$Tr_K(\alpha)=\sum_{k=1}^n\sigma_k(\alpha)$$
+Thus,
+$$Tr(\alpha_i\alpha_j)=\sum_{k=1}^n\sigma_k(\alpha_i\alpha_j)=\sum_{k=1}^n\sigma_k(\alpha_i)\sigma_k(\alpha_j)$$
+Then, constructing our matrix of traces, we get that:
+$$(Tr(\alpha_i\alpha_j))_{ij}=((\sigma_j(\alpha_i))_{ij}(\sigma_i(\alpha_j)_{ij}))_{ij}$$
+$$\text{det}((Tr(\alpha_i\alpha_j)_{ij}))= \text{det}(\sigma_i(\alpha_j)_{ij})^2 = D(\alpha_1,\cdots, \alpha_n)$$
+\end{proof}
+\newpage
+\subsection{Quadratic Fields}
 \begin{definition}
-We call a topological space \underline{Hausdorff} if for every $x\neq y$, there are open sets $U,V$ such that $x\in U$ and $y\in V$, and $U\cap V=\emptyset$.
+A \underline{quadratic field} is an algebraic number field $K$ of degree 2 over $\Q$.
 \end{definition}
-\begin{itemize}
-    \item If $f_\beta^{-1}\circ f_\alpha$ is smooth, then the manifold is called smooth. 
-    \item If $\R^n$ is replaced by $\C^n$ and $f_\beta^{-1}\circ f_\alpha$ is holomorphic or analytic then $M$ is called complex.
-\end{itemize}
-\begin{example}
-The circle $S^1=\{z:\ |z|=1\}$. Define $f:\R\rightarrow \C$ such that $f(t)=e^{2\pi it}$. Let $U_1=(-\pi, \pi)$ and $U_2=(0,2\pi)$. Now, we consider a function $g: U_1\sqcup U_2\rightarrow \C$, where $g(t)=e^{2\pi it}$. We can consider $f(U_1)\cap f(U_2)$ as the overlap, and so $f_1^{-1}(f(U_1)\cap f(U_2))=(=\pi,0)\cup (0,\pi)$, and $f_2^{-1}(f(U_1)\cap f(U_2))=(\pi,2\pi)\cup (0,\pi)$.\\
-\\
-Then, $f_2^{-1}\circ f_1 :(-\pi,0)\cup (0,\pi)\rightarrow (\pi,2\pi)\cup (0,\pi)$ is as follows:
-\begin{equation*}
-    f_2^{-1}\circ f_1(t)=\begin{cases}
-    t &,t\in(0,\pi)\\
-    t+2\pi &,t\in(-\pi,0)
-    \end{cases}
-\end{equation*}
-\end{example}
-\begin{theorem}
-If $M_1,M_2$ are manifolds of dimensions $n_1, n_2$, then $M_1\times M_2$ is a manifold of dimension $n_1+n_2$.
-\end{theorem}
- Consider:
- $$f:\bigsqcup U_\alpha\rightarrow M_1$$
- $$g:\bigsqcup V_\beta\rightarrow M_2$$
- $$f\times g:\bigsqcup U_\alpha\times V_\beta\rightarrow M_1\times M_2$$
- $$(f\times g)_{\alpha\beta}=(f_\alpha,g_\beta)$$
- \begin{example}
- $(S^1)^{\times n}$ is a manifold. In the $n=2$ case, we get $(-\pi, \pi)^2\sqcup (-\pi, \pi)\times (0,2\pi)\sqcup (0,2\pi)\times (-\pi,\pi)\sqcup (0,2\pi)^2$ as our domain, where $f(t,s)=(e^{2\pi it},e^{2\pi is})$, and this gives us the torus.
- \end{example}
- \newpage
- \subsection{September 8, 2022}
- \begin{example}
- Consider $\R P^2=\{\hat{x}:\ x\in\R^3\setminus \{0\},x\sim y\iff x=\lambda y, \lambda\neq 0\}$. $\R P^2$ is a manifold, with the following three charts:
- $$U_1=U_2=U_3=\R^2$$
- $$f: \displaystyle\bigsqcup_{i=1}^3 U_i\rightarrow \R P^2$$
- $$f_1(x_1,x_2)=[1:x_1:x_2]$$
- $$f_2(x_1,x_2)=[x_1:1:x_2]$$
- $$f_3(x_1,x_2)=[x_1:x_2:1]$$
- These maps are one-to-one, and onto. We note that $f_2^{-1}\circ f_1: \R^2\rightarrow \R^2$ is the map $(x_1,x_2)\xrightarrow{f_1} [1:x_1:x_2]=\left[\frac{1}{x_1}:1:\frac{x_2}{x_1}\right]\xrightarrow{f_2^{-1}}\left(\frac{1}{x_1},\frac{x_2}{x_1}\right)$
- \end{example}
- \begin{example}
- Consider $\C P^1$. We have that $U_1=U_2=\C$. We define maps as:
- $$f_1:U_1\rightarrow \C P^1$$
- $$f_1(z)=[1:z]$$
- $$f_2: U_2\rightarrow \C P^1$$
- $$f_2(z)\rightarrow [z:1]$$
- $$f_2^{-1}\circ f_1:z\rightarrow [1:z]\rightarrow \left[\frac{1}{z}:1\right]\rightarrow \frac{1}{z}$$
- \end{example}
- \begin{definition}[Poincar\'e]
- A smooth manifold is a subspace of $\R^n$ that is locally the graph of a smooth function.
- \end{definition}
- 
- \begin{example}
- Consider $S^2$. Consider the graph $f(x_1,x_2)=\pm\sqrt{1-x_1^2-x_2^2}$, and similar considerations for the two other orientations. These graphs act as charts from the plane to the sphere.  
- \end{example}
- \noindent Now, we return to closed sets!
- \begin{example}
- $[a,b], [a,\infty)$
- \end{example}
- \begin{example}
- $$C=[0,1]\setminus\displaystyle\bigcup_{n=1}^\infty \bigcup_{k=0}^{3^{n-1}-1}\left(\frac{3k+1}{3^n},\frac{3k+2}{3^n}\right)$$
- This set consists of all numbers in $[0,1]$ that admit a ternary representation with only 0's and 2's. Consider a function:
- $$f: C\rightarrow [0,1]^2$$
- $$f(0.a_1a_2a_3\cdots) = (0.\frac{a_1}{2}\frac{a_3}{2}\cdots, 0.\frac{a_2}{2}\frac{a_4}{2}\cdots)$$
- This function is then continuous and onto from $C$ to $[0,1]^2$. By Tietze's Extension Theorem, we get an extention $\tilde{f}:[0,1]\rightarrow [0,1]^2$ which is continuous and onto. This was induced by G. Peano. 
- \end{example}
- \begin{example}
- Sierpi\'nski Triangle. 
- \end{example}
- \begin{example}
- In the discrete topology, every set is clopen
- \end{example}
- \begin{example}
- $\Q\subseteq \R$, $(a,b)$ are clopen in $\Q$.
- \end{example}
- \begin{example}
- In $\R^n$, consider $\overline{B}(x,\epsilon)=\{y:\ d(x,y)\leq \epsilon\}$ as the closed balls.
- \end{example}
- \begin{example}
- The Zariski topology, where $f(z_1,z_2,\cdots, z_n)\in \C[z_1,\cdots,z_n]$, and:
- $$V(f)=\{(z_1,\cdots, z_n)\in \C^n:\ f(z_1,\cdots, z_n)=0\}$$
- These are called algebraic sets, or varieties if $f$ is irreducible, and these are the closed sets of the Zariski topology. Unions of algebraic sets are the closed sets of the Zariski topology.
- \end{example}
- \begin{proposition}[MAYBE ON EXAM 1]
- \begin{enumerate}[(1)]
-     \item If $Y$ is a subspace of $X$, then $A\subseteq Y$ is closed if and only if $A=B\cap Y$ where $B\subseteq X$ is closed.
-     \item Let $A\subseteq Y\subseteq X$. If $A$ is closed in $Y$ and $Y$ is closed in $X$, then $A$ is closed in $X$.
-     \item If $A$ is closed in $X$ and $B$ is closed in $Y$, then $A\times B$ is closed in $X\times Y$.
-     \item If $A_\alpha$ is closed in $X_\alpha$ for $\alpha\in I$, then $\displaystyle\prod_{\alpha\in I}A_\alpha$ is closed in $\displaystyle\prod_{\alpha\in I}X_\alpha$ with the product topology.
- \end{enumerate}
- \end{proposition}
- \begin{proof}
- \begin{enumerate}[(1)]
-     \item $Y\setminus A$ is open. So there is a $U$ such that $Y\setminus A = Y\cap U$. Let $B=X\setminus U$. Then $$A=Y\setminus (Y\setminus A) = Y\setminus (Y\cap U) = Y\setminus U=Y\cap (X\setminus U)=B\cap Y$$
-     Now, if $A=B\cap Y$, then $Y\setminus A=(X\setminus B)\cap Y$.
-     \item $A$ closed in $Y$ and $Y$ closed in $X$ gives us that $X\setminus Y=U$ is open in $X$. Then, $A=Y\cap (X\setminus V)$. Thus $X\setminus A = V\cup U$, so since this is a union of two open sets, it is open, and thus $A$ is closed in $X$.
-     \item $(X\times Y)\setminus (A\times B)= (X\times (Y\setminus B))\cup ((X\setminus A)\times Y)$. These sets are all open, so $A\times B$ is closed.
-     \item Induction! Do the same thing as above as unions.
-     $$\displaystyle\left(\prod_{\alpha\in I}X_\alpha\right) \setminus\left(\prod_{\alpha\in I}A_\alpha\right)=\bigcup_{\alpha\in I}\left(\left(\prod_{\beta\neq \alpha}X_\beta\right)\times (X_\alpha\setminus A_\alpha) \right)$$
- \end{enumerate}
- \end{proof}
- \begin{proposition}
- Let $X,Y$ be topological spaces. Then, $f:X\rightarrow Y$ is continuous if and only if the preimage of every closed set is closed.
- \end{proposition}
- \begin{proof}
- $$f^{-1}(Y\setminus A)=X\setminus f^{-1}(A)$$
- \end{proof}
- \begin{definition}
- The \underline{closure} of a set $S$ is the smallest closed set containing $S$, denoted $\overline{S}$.
- \end{definition}
- \begin{definition}
- The \underline{interior} of a set $S$ is the largest open set contained in $S$, denoted $Int(S)$.
- \end{definition}
- \begin{example}
- $\overline{\Q}-\R$. $Int(\Q)=\emptyset$
- \end{example}
- \begin{example}
- $B(x,r)=\{y:\ d(x,y)<r\}\implies \overline{B(x,r)}=\{y:\ d(x,y)\leq r\}$.
- \end{example}
- \begin{lemma}
- Let $X$ be a topological space, and $A\subseteq X$. Then, $\overline{X\setminus A}=X\setminus Int(A)$
- \end{lemma}
- \begin{proof}
- $$X\setminus A\subseteq X\setminus Int(A)\implies \overline{X\setminus A}\subseteq \overline{X\setminus Int(A)}=X\setminus Int(A)$$
- Now, let $x\in X\setminus (\overline{X\setminus A})$. Then there is an open set $U$ such that $x\in U$ and $U\cap (\overline{X\setminus A})=\emptyset$. Thus, $U\cap (X\setminus A)=\emptyset$, so $U\subseteq A$. Therefore, $x\in Int(A)$.  Hence, $x\not\in X\setminus Int(A)$, so $X\setminus Int(A)\subseteq \overline{X\setminus A}$, and we have the double inclusion as desired.
- \end{proof}
- \newpage
- \begin{theorem}
- Let $A\subseteq X$. Then, $x\in\overline{A}$ if and only if for every open set $U$ such that $x\in U$, we have $U\cap A\neq \emptyset$.
- \end{theorem}
- \begin{proof}
- First, we wish to show that If $x\in\overline{A}$ and $U$ is open where $x\in U$, then $U\cap A\neq\emptyset$. If, for the sake of contradiciotn, $U\cap A=\emptyset$, then $U\subseteq Int(X\setminus A)$, so $X\setminus Int(X\setminus A)=\overline{X\setminus (X\setminus A)}=\overline{A}$, which does not contain $x$, and so we get a contradiction.\\
- \\
- Conversely, if $x$ has the property that every open set $U$ containing $x$ intersects $A$, then $x\not\in Int(X\setminus A)$. So $x\in X\setminus Int(X\setminus A)=\overline{X\setminus(X\setminus A)}=\overline{A}$. Thus, we are done.
- \end{proof}
- \begin{proposition}[Midterm maybe]
- \begin{enumerate}[1)]
-     \item Let $Y\subseteq X$, with the subspace topology. If $A\subseteq Y$, then let us denote $\overline{A}_X$ as the closure of $A$ in $X$. Then, the closure of $A$ in $Y$ is $\overline{A}_X\cap Y$.
-     \item Taking the same conditions as above, if $Y$ is closed in $X$, then the closure of $A$ in $X$ and $Y$ is the same.
-     \item $\displaystyle \prod_{\alpha\in I}\overline{A}_\alpha=\overline{\prod_{\alpha\in I}A_\alpha}$
- \end{enumerate}
- \end{proposition}
- \begin{proof}
- \textbf{1):}\\
- \\
- Let $x\in\overline{A}_X\cap Y$. Then, for every open set $U$ in $X$ containing $x$, $U\cap A\neq \emptyset$. So $(U\cap Y)\cup A\neq \emptyset$. But $U\cap Y$ with $U$ open in $X$ are all open subsets of $Y$. By Theorem 3, $x$ is in the closure of $A$ in $Y$. Thus, $\overline{A}_X\cap Y\subseteq \overline{A}_Y$.\\
- \\
- Conversely, $\overline{A}_X\cap Y$ is closed and contains $A$, so the closure of $A$ in $Y$ is contained in $\overline{A}_X\cap Y$.\\
- \\
- \textbf{2):}\\
- \\
- if $Y$ is closed, then $\overline{A}_X\subseteq \overline{Y}=Y$. So $\overline{A}_X\cap Y = \overline{A}_X$.\\
- \\
- \textbf{3):}\\
- \\
- Let $x=(x_\alpha)_\alpha\in \displaystyle\prod_{\alpha\in I}\overline{A}_\alpha$. Let $\displaystyle\prod_{j=1}^nU_{\alpha_j}\times \prod_{\beta\neq \alpha_j}X_\beta$, or $\displaystyle\prod_{\alpha\in I}U_\alpha$ such that $x_\alpha\in U_\alpha$. Then, by Theorem 3, $U_\alpha\cap A_\alpha\neq \emptyset$, for all $\alpha$, and $X_\beta\cap A_\beta\neq\emptyset$, for all $\beta\neq\alpha$. It follows that in either case, the open set intersects $\displaystyle\prod A_\alpha$. Thus, $\displaystyle\prod \overline{A}_\alpha\subseteq \overline{\prod A_\alpha}$. Conversely, let $x\in \overline{\displaystyle\prod A_\alpha}$. Then, every open set containing $x$ intersects $\displaystyle\prod A_\alpha$. Choose $U$ of either form as expressed in the previous direction, and we get coordinate-wise nonempty intersections. Vary $U_\alpha$'s to make them be any open set that contains $x_\alpha$. You then obtain the reverse inclusion, and thus we are done.      
- \end{proof}
- \noindent This result does not hold for interiors as seen in the following examples:
- \begin{example}
- $\Q\subseteq \R$. $Int*\Q)\neq \emptyset$,  but the interior of $\Q$ in $\Q$ is $\Q$. 
- \end{example}
- However, the third case of the proposition works for interiors in the box topology but not the product topology. 
- \begin{example}
- $[0,1]\subseteq \R$, $Int([0,1])=(0,1)$. However:
- $$\displaystyle\underbrace{\prod_{i=1}^\infty (0,1)}_{\text{not an open set}}\subseteq \prod_{i=1}^\infty\R$$
- \end{example}
- \begin{proposition}
- Let $X,Y$ be topological spaces. $f:X\rightarrow Y$ is continuous if and only if for every subset $A\subseteq X$, we have $f(\overline{A})\subseteq \overline{f(A)}$
- \end{proposition}
- \begin{proof}
- Assume $f$ is continuous. Then $f^{-1}(Y\setminus \overline{f(A)})$ is open. This is the complement of $f^{-1}(\overline{f(A)})$, so this set is open. Then $A\subseteq f^{-1}(\overline{f(A)})$, so $\overline{A}\subseteq f^{-1}(\overline{f(A)})\implies f(\overline{A}\subseteq \overline{f(A)}$.\\
- \\
- Conversely, let $B\subseteq Y$ be open. we want to show $f^{-1}(B)$ is open. Let $A=X\setminus f^{-1}(B).$ Then:
- $$f(\overline{A})\subseteq \overline{f(A)}=\overline{f(X\setminus f^{-1}(B))}=\overline{Y\setminus B} = Y\setminus B$$
- Thus, $f(\overline{A}\subseteq Y\setminus B$, but $A=X\setminus f^{-1}(B)$, so $A=\overline{A}$, and we are done
- \end{proof}
- \begin{definition}
- $x$ is a \underline{limit point} for $A$ if for every $U$ open such that $x\in U$, there is $x'\neq x$ such that $x'\in A\cap U$. We denote $A'$ to be the set of limit points of $A$
- \end{definition}
- \begin{example}
- $$A=\{\frac{1}{n}:\ n\in\N\}$$
- $A$ has only 1 limit point, namely 0. 
- \end{example}
- \begin{proposition}
- $$\overline{A}=A\cup A'$$
- \end{proposition}
- \begin{corollary}
- A subset of a topological space is closed if and only if it contains all of its limit points.
- \end{corollary}
- \begin{definition}
- In an arbitrary topological space, one says that a sequence is convergent to $x\in X$ if for every neighbourhood $V$ of $x$, there is an $N$ such that for all $n\geq N$, $x_n\in V$
- \end{definition}
- \noindent Note: IN the Zariski topology, a sequence with no constant subsequence converges to every point in the space. The definition is fine in metric spaces. In every metric space, the limit is unique.
- \begin{proposition}
- In metric spaces, the limit is unique. 
- \end{proposition}
- \begin{proof}
- If $x_1$, $x_2$ are both limits of a sequence, consider the open ball with radius $\frac{d(x_1,x_2)}{2}$. All but finitely many terms lie in each of the disjoint balls. 
- \end{proof}
- \begin{lemma}[Sequence Lemma]
- Let $X$ be a metric space.
- \begin{enumerate}[(a)]
-     \item $x\in\overline{A}$ if and only if there is a sequence in $A$ converging to $x$.
-     \item $x\in A'$ if and only if there is a sequence of points in $A$ that does not eventually become constant that converges to $x$. 
- \end{enumerate}
- \end{lemma}
- \begin{proof}
- Recall that $\overline{A}= A\cup A'$. If $x\in A$, then $x_n=x$ for all $n$ converges to $x$. Thus, it suffices to prove part $(b)$.\\
- \\
- Let $x\in A'$. For $n\in\N$, consider $B(x,\frac{1}{n})$. Since $x\in A'$, there is $x_n\in A\cap B(x,\frac{1}{n}$ such that $x_n\neq x$. Now, let $\epsilon >0$, and choose $K(\epsilon)$ so that $\frac{1}{K(\epsilon)}<\epsilon$. Then, for $n\geq K(\epsilon)$, $x_n\in B(x,\frac{1}{n})\subseteq B(x,\frac{1}{K(\epsilon)}\subseteq B(x,\epsilon)$. Convsersely, if $x_n\rightarrow x$, $x_n\in A$, $x_n$ not eventually constant. We consider an open set $U$ containing $x$. Let $B(x,\epsilon)\subseteq U$. There is a $K(\epsilon)$ such that for all $n\geq K(\epsilon)$, $x_n\in B(x,\epsilon)$. From these, we can choose a term that is not $x$. The definition of $a'$ is thus fulfilled, and so we are done
- \end{proof}
- \begin{theorem}
- Let $X,Y$ be metric spaces. Then, $f:X\rightarrow Y$ is continuous if and only if for every convergent sequence $x_n\in X$, the sequence $f(x_n)$ is convergent in $Y$ 
- \end{theorem}
- \begin{proof}
- For $x_n\rightarrow x$, consider $B(f(x),\epsilon)$. Then $f^{-1}(B(f(x),x))$ is an open neighbourhood of $x$. Thus, there is an integer $K(\epsilon)\in \N$ such that for all $n\geq K(\epsilon)$, $x_n\in f^{-1}(B(f(x),\epsilon))$. Thus, for all $n\geq K(\epsilon)$, $f(x_n)\in B(f(x),\epsilon))$, so $f(x_n)$ is convergent in $Y$.\\
- \\
- Conversely, assume that $x_n$ converges to $x$. Consider $x_1,x,x_2,x,x_3,x\cdots$. This converges to $x$. Then $f(x_1),f(x),f(x_2),f(x),\cdots$ converges by hypothesis. Since it has a constant subsequence equal to $f(x)$, the sequence itself converges to $f(x)$. The conclusion then follows from Proposition 11.
- \end{proof}
- \begin{definition}
- $X$ is Hausdorff if for every $x,y\in X$, $x\neq y$ there are open sets $U,V$ such that $x\in U$, $y\in V$, $U\cap V=\emptyset$.
- \end{definition}
- \begin{theorem}
- If $X$ and $Y$ are homeomorphic, and $X$ is Hausdorff, then $Y$ is Hausdorff.
- \end{theorem}
- \begin{proof}
- Consider $h:Y\rightarrow X$, a homeomorphism. Let $x,y\in Y$. Then $f(x)\neq f(y)$. There are disjoint open sets $U$ and $V$ in $X$ containing these 2 points separately. THe open sets $f^{-1}(U)$ and $f^{-1}(V)$ contain $x$ an $y$ respectively and are disjoint.
- \end{proof}
- \begin{remark}
- Hausdorff is a topological property.
- \end{remark}
- \begin{example}
- Consider $\C^n$ with the standard topology and $\C^n$ with the Zariski Topology. These are NOT homeomorphic. One is Hausdorff and the other is not.
- \end{example}
- \begin{definition}
- A topological space $X$ is not connected if there exist two open sets $U,V$ such that $U\cup V = X$ and $U\cap V=\emptyset$.
- \end{definition}
- \begin{example}
- $(-\infty,0)\cup (0,\infty)$ is not connected.
- \end{example}
- \noindent If a space is not ``not connected", then it is connected.
- \begin{example}
- $\Q$ is not connected.
- \end{example}
- \begin{proposition}
- \begin{enumerate}[(a)]
- \item
- If $A,B\subseteq X$ are disjoint subsets such that $A\cup B=X$ and neither of these sets contains a limit point of the other. Then, they form a separation of $X$. 
-\item If $U,V$ form a separation of $X$ and if $Y\subseteq X$, $Y$ connected, then $Y$ lies entirely inside $U$ or $V$.
- \end{enumerate}
- \end{proposition}
- \begin{proof}
- \textbf{(a)}:\\
- \\
- Since neither contain limit points of the other, $\overline{A}=A$ and $\overline{B}=B$, so $A$ and $B$ are closed. Then, $A=X\setminus B$ and $B=X\setminus A$ are open, and form a separation.\\
- \\
- \textbf{(b):}\\
- \\
- Consider $\cap U$ and $Y\cap V$. $\overline{Y\cap U}\subseteq U$., and $\overline{Y\cap V}=V$. Thus, $\overline{Y\cap U}\cap \overline{Y\cap V}=\emptyset$, so $Y$ is entirely in $A$. 
- \end{proof}
- \begin{proposition}
- \begin{enumerate}[1)]
-     \item The union of the collection of connected sets that share one point is connected. 
- \end{enumerate}
- \end{proposition}
- \begin{proof}
- Let us assume that $X_\alpha$, $\alpha\in A$ are connected, $x\in X_\alpha$ for all $\alpha$. Let us assume there is separation $U\cup V= \displaystyle\cup_{\alpha\in A}X_\alpha$. Then, there is a $y\in\displaystyle\bigcup_{\alpha\in A}X_\alpha$ such that $x,y$ are in different sets $U,V$. However, $y\in X_\alpha$ for some $\alpha$, and $U\cap X_\alpha$< $V\cap X_\alpha$ are open, disjoint and $(U\cap X_\alpha) \cup (V\cap X_\alpha)=X_\alpha$. $x$ is in one, $y$ is in the other. This then forms a separation of $X_\alpha$, and we get a contradiction.
- \end{proof}
- \end{document}
+\begin{proposition}
+All quadratic fields are of the form $\Q(\sqrt{d})$ for some square-free $d\in\Z$. 
+\end{proposition}
+\begin{proof}
+Let $K=\Q(\alpha)$. for some $\alpha\in\mathcal{O}$. Since $K$ is a quadratic field, the minimum polynomial of $\alpha$ is of the form $p(x)=x^2+ax+b$, where $a,b\in\Z$. This gives us that:
+$$\alpha = \frac{-a\pm \sqrt{a^2-4b}}{2}$$
+Now, we write: $a^2-4b= r^2d$, where $d$ is square free. Then, 
+$$\alpha = \frac{-a\pm r\sqrt{d}}{2}$$
+Thus, $\Q(\alpha)=\Q\left(\frac{-a\pm r\sqrt{d}}{2}\right)=\Q(\sqrt{d})$.
+\end{proof}
+\begin{remark}
+If $d<0$, $\Q(\sqrt{d})$ is called an imaginary quadratic field. If $d>0$, this is instead called a real quadratic field. 
+\end{remark}
+\end{document}
