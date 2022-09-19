@@ -1,0 +1,596 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+\usepackage[shortlabels]{enumitem}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=red,
+    linktoc=all
+}
+\definecolor{dg}{rgb}{0.0, 0.5, 0.0}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\HH}{\mathbb{H}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\title{Topology Notes - Spring 2022}
+\author{JJ Hoo}
+\date{January 2022}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+\section{General Topology}
+\subsection{August 30, 2022}
+\begin{definition}
+Let $X$ be a set. A topology $\tau$ on $X$ is a family of subsets (called open subsets) such that:
+\begin{enumerate}
+    \item $\emptyset, X\in\tau$
+    \item Finite intersections of open subsets are open
+    \item Arbitrary unions of open subsets are open
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Let $f:X\rightarrow Y$, where $X$ and $Y$ are topological spaces. $f$ is continuous if the preimage of every open set is an open set,
+\end{definition}
+\begin{proposition}
+If $f:X\rightarrow Y$ and $g:Y\rightarrow Z$ are continuous maps, then $g\circ f$ is continuous.
+\end{proposition}
+\begin{proof}
+If $U$ is open in $Z$, then $g^{-1}(U)$ is open in $Y$. Since $f$ is continuous, $f^{-1}(g^{-1}(U))$ is open. Thus, $U$ open implying $(g\circ f)^{-1}(U)$ is open gives us that $g\circ f$ is continuous.
+\end{proof}
+\noindent \textbf{How should we construct topological spaces?}:
+\begin{definition}
+A \underline{basis} for a topology is a collection $\mathcal{B}$ of subsets of a set $X$ such that:
+\begin{itemize}
+    \item $X$is the union of the elements of $\mathcal{B}$
+    \item if $B_1,B_2\in\mathcal{B}$, then for every $x\in B_1\cap B_2$, there is a $B_3\in\mathcal{B}$ such that $x\in B_3\subseteq B_1\cap B_2$
+\end{itemize}
+We define the open sets as arbitrary unions of elements of $\mathcal{B}$.
+\end{definition}
+\noindent By the first property, $\emptyset, X\in \mathcal{B}$. Arbitrary unions are in the topology by definition. Now, suppose $B_1,B_2\in\mathcal{B}$, then $B_1\cap B_2=\displaystyle\bigcup_{x\in B_1\cap B_2} B_3(x)$, where $B_3$ is as prescribed in the second property. We then get by induction that finite intersections are in the topology.
+\begin{example}
+Consider $\{(a,b)|a<b,\ a,b\in\R\}$. This forms a basis for the standard topology on $\R$. 
+\end{example}
+\begin{example}
+Consider $\{(a,b)|a<b\ a,b\in\Q\}$. This ALSO forms a basis for the standard topology on $\R$.
+\end{example}
+\begin{proposition}
+$f:X\rightarrow Y$ is continuous if the preimage of every basis element is open.
+\end{proposition}
+\begin{example}
+Consider $C[a,b]$. Consider the function $\phi:C[a,b]\rightarrow \R$ such that $\phi(f)=\int_a^b f(x)\ dx$ is continuous
+\end{example}
+\begin{example}
+Consider $L^p(\R)$, where $p\geq 1$. Consider $\phi:L^p(\R)\rightarrow \R$, where $\phi(f)=\int_{-\infty}^\infty (f(x))^p\ dx$. $\phi$ is continuous.
+\end{example}
+\begin{definition}
+Let $(X,\tau)$ be a topological space. Consider $Y\subseteq X$. We define $\tau_Y = \{U\cap Y|\ U\in \tau\}$ to be the subspace topology. The axioms for a topology are easily checked here.
+\end{definition}
+\begin{proposition}
+Let $(X,\tau)$ be a topological space. Let $\mathcal{B}$ be a family of subsets that satisfy the conditions of a basis. 
+If every element of $\mathcal{B}$ is open and if for every open set $U$ and every $x\in U$, there is $B\in\mathcal{B}$ such that $x\in B\subseteq U$, then $B$ is a basis for $\tau$ 
+\end{proposition}
+\begin{proof}
+For every $U\in \tau$, write $U=\displaystyle\bigcup_{x\in U} B(x)$, where $B$ is prescribed as above. 
+\end{proof}
+\begin{example}
+Consider $\{[a,b)|\ a<b, a,b\in\R\}$. This is the lower limit topology. Note that $[1,2)$ is not a union of open intervals, so this is not the standard one. 
+$$(a,b)=\displaystyle\bigcup_{n=1}^\infty [a+\frac{1}{n},b)$$
+\end{example}
+\begin{definition}
+$\tau'$ is finer than $\tau$ if $U\in \tau\implies U\in \tau'$. We say here that $\tau$ is coarser than $\tau'$. For instance, 
+the lower limit topology is finer than the standard topology.
+\end{definition}
+\begin{example}
+Consider $\mathcal{B}=\{V_n(a)|\ a\in\R^n, n>0\}$.
+\end{example}
+\begin{example}
+Consider $C[a,b]$. The basis consists of the sets:
+$$\{g|\ \sup_{x\in[a,b]} |f(x)-g(x)|<r\},\qquad f,g\in C[a,b],\ r>0$$
+\end{example}
+\begin{example}
+Consider $L^p(\R)$, for $p\geq 1$.The basis consists of the sets:
+$$\{g|\left(\int_{-\infty}^\infty |f-g|^p\ dx\right)^\frac{1}{p}<r\},\qquad f\in L^p(\R),\ n>0$$
+It is of note that these are great examples of Banach Spaces
+\end{example}
+\subsection{September 1, 2022}
+Consider the following diagram for the product topology:
+\begin{center}
+\begin{tikzcd}
+Z \arrow[rd, "f_\alpha"] \arrow[r, "f"] & \displaystyle\prod_{\alpha\in A} X_\alpha \arrow[d, "\pi_\alpha"] \\
+                                        & X_\alpha                                                         
+\end{tikzcd}
+\end{center}
+Note that $f_\alpha = \pi_\alpha\circ f$. $f$ is continuous iff $f_\alpha$ is continuous for all $\alpha$. We want each of the projections $\pi_\alpha$ to be continuous.\\
+\\
+Note that $\pi_\alpha^{-1}(U_\alpha)$ is open for every open $U_\alpha\subseteq X_\alpha$, because:
+$$\pi^{-1}(U_\alpha)=U_\alpha\times \displaystyle\prod_{\beta\neq \alpha}X_\beta$$
+Hence, a basis for this topology are sets of the form:
+$$U_{\alpha_1}\times U_{\alpha_2}\times\cdots\times U_{\alpha_n}\times\displaystyle\prod_{\beta\neq \alpha_i}X_\beta\qquad U_{\alpha_i}\in X_{\alpha_i}\text{ open}$$
+\begin{proposition}
+$f$ is continuous if and only if $f_\alpha$ is continuous for every $\alpha$.
+\end{proposition}
+\begin{proof}
+The forward direction is trivial. Since $\pi_\alpha$ is continuous, $f_\alpha=f\circ\pi_\alpha$ is a composition of continuous maps, and is thus continuous. Now, let $f_\alpha$ be continuous for every $\alpha$. We only need to check that the preimage of a basis element is an open set.
+\begin{align*}
+    f^{-1}\left(U_{\alpha_1}\times U_{\alpha_2}\times\cdots\times U_{\alpha_n}\times \displaystyle\prod_{\beta\neq \alpha_i}X_\beta\right) &= f^{-1}\left(\bigcap_{i=1}^n\left(U_{\alpha_i}\times\displaystyle\prod_{\beta\neq \alpha_i}X_\beta\right)\right)\\
+    &=\bigcap_{i=1}^n f^{-1}\left(U_{\alpha_i}\times\displaystyle\prod_{\beta\neq \alpha_i}X_\beta\right)\\
+    &=\bigcap_{i=1}^nf^{-1}_{\alpha_i}(U_{\alpha_i})
+\end{align*}
+This is open because the preimages of $U_\alpha$ by $f_\alpha$ are open, and finite intersections of open sets are open
+\end{proof}
+\begin{example}
+Consider $C[a,b]\subseteq\displaystyle\prod_{x\in[a,b]}\R$. This topology has as basis sets of the form:
+$$V_{f,x_1,\cdots, x_n,\epsilon}=\{g:\ |f(x_i)-g(x_i)|<\epsilon,\ i\in\N\}$$
+This is called the $\text{weak}^*$ topology on $C[a,b]$.
+\end{example}
+\begin{example}
+Consider $\R\times\R\rightarrow\R$. we can define this to have multiplication, addition, or division defined on $\R\times \R\setminus\{0\}$.
+\end{example}
+\begin{proposition}
+If $X$ is a topological space and $f,g:X\rightarrow \R$ (with maybe $g:X\rightarrow \R\setminus\{0\}$) are continuous functions, then $f+g, f\cdot g, \frac{f}{g}$ are continuous.
+\end{proposition}
+\begin{proof}
+These are compositions of continuous functions. We consider:
+$$X\xrightarrow{(f,g)}\rightarrow \R\times\R\xrightarrow{+}\R$$
+The same happens for multiplication and division.
+\end{proof}
+\noindent\textbf{Disjoint Unions of Topological Spaces:}\\
+\\
+Consider $X_\alpha, \alpha\in A$, $X_\alpha\cap X_\beta=\emptyset$. We then denote the disjoint union as $\displaystyle\bigsqcup_{\alpha\in A}X_\alpha$. Consider the following diagram: 
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB12os40G6AnnBwCGMTgCMsAczgBHAMZM0AfWCdGaABZ1OWMAAIAggF8AGio0NtdECdLpMufIRQBGclVqMWbAJp2DiAY2HgERGRuXvTMrIggFlY2dl4wUNLwRKAAZgBOEAC2SABM1DgQSB7esWzZluyaOiDU-BIwDAAKTmGuILkyWjiBOflFiKUg5Uhkk3RYDGxaEBAA1sMgeYXTZRWIVTG+8dkpJkA
+\begin{tikzcd}
+\displaystyle\bigsqcup_{\alpha\in A}X_\alpha \arrow[r, "f"] & Y \\
+X_\alpha \arrow[ru, "f_\alpha"'] \arrow[u, hook]            &  
+\end{tikzcd}
+\end{center}
+Similarly as before, $f$ is continuous if and only if $f_\alpha$ is continuous for all $\alpha$. A topology consists of the sets that are unions of $U_\alpha$ where $U_\alpha$ are open in $X_\alpha$. If the $X_\alpha$'s are not disjoint, then we might run into trouble in the overlap!
+\\
+\\
+\noindent\textbf{Quotient Spaces}
+Consider a topological space $X$. Take $f:X\rightarrow Y$ to be a surjective function. THe open sets of $Y$ are of the form $f(U)$ where $U$ is open in $X$.\\
+\\
+Another perspective: Consider a topological space $X$. Take an equivalence relation on $X$. Denote by $\hat{x}$ the equivalence class of $x$. Let:
+$$Y=\{\hat{x}|\ x\in X\}$$
+Now, we consider the function $f:X\rightarrow Y$ where $f(x)=\hat{x}$., and we use the notation $X/\sim$ to represent this quotient space. Now, consider the following diagram:
+\begin{center}
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBoBGAXVJADcBDAGwFcYkQBNEAX1PU1z5CKMsWp0mrdgA0efEBmx4CRcqTE0GLNohAAtHuJhQA5vCKgAZgCcIAWyQAmGjghIyE7exMgajegBGMIwACgLKwiCMMJY4viBwABZYse68VrYOiGogru6akjoglvH+QaHhQuzWWCaJcenFmU4ubtkFXromADrdAMZY1n0ABCV+gcFhSlW6NXUNlNxAA
+\begin{tikzcd}
+X \arrow[d, "f"'] & Z \arrow[ld, "g"] \arrow[l, "g\circ f"'] \\
+Y                 &                                         
+\end{tikzcd}
+\end{center}
+We want $g$ to be continuous if and only if $g\circ f$ is continuous, and this is the reason for our construction of the quotient space.
+\begin{proposition}
+The above is a topology on $Y$.
+\end{proposition}
+\begin{proof}
+\begin{enumerate}[(a)]
+    \item $Y=f(x)$ is open, and $\emptyset=f(\emptyset)$ is open
+    \item $f(U_1\cap U_2\cap\cdots\cap U_n)$ is a finite intersection of $f(U_i)$'s, so this is open
+    \item If $f(U_\alpha)$ is open, for all $\alpha$, then it's easy to see that the images commute with the union, and so arbitrary unions are open.
+\end{enumerate}
+\end{proof}
+\begin{example}
+Take $f:\R\rightarrow\C$. This may not be a surjection, but it is certainly a surjection onto the image by construction. Let $f(x)=e^{2\pi ix}$. The image is $\{z:\ |z|=1\}=: S^1$ (the 1-dimensional sphere). We can induce a topology on $S^1$ by using the standard topology on $\R$, or by inducing from the topology on $\C$. The induced topology is the same as the quotient topology. This can be resolved by thinking of the standard convention where $S^1=\R/\Z$.
+\end{example}
+\begin{example}
+Consider $S^2$, the sphere in $\R^3$. Consider the inclusion of $S^2\subseteq \R^3$, and consider the induced topology on $S^2$.  We can consider two points on the sphere to be equivalent as follows:
+$$(x,y,z)\sim (x',y',z')\iff (x=x',y=y',z=z')\vee (x=-x',y=-y',z=-z')$$
+Let $\R P^2 = S^2/\sim$, and consider the quotient topology. This space is essentially a cap being put on top of a M\"obius band. By definition, this is the two-dimensional projective plane. Another way to construct $\R P^2$:\\
+\\
+consider $\R^3\setminus\{(0,0,0)\}\subseteq \R^3$ using the standard topology. We take the following equivlence:
+$$(x,y,z)\sim (x',y',z')\iff \exists \lambda \neq 0:\ x=\lambda x', y=\lambda y', z=\lambda z'$$
+Then, $(\R^3\setminus\{(0,0,0)\})/\sim$ is exactly $\R P^2$. We can then generalize this construction to $\R P^n$ using the same procedure, but we can also have $\C P^n$ to be equivalence classes of points in $\C^{n+1}\setminus\{(0,0,\cdots,0)\}$, with the same equivalence as before, except now $\lambda\in \C$. For instance $\C P^1$ is the Riemann sphere. 
+\end{example}
+\begin{example}
+Consider the unit square with corners $(0,0), (0,1), (1,0), (1,1)$. We induce an equivalence relation by $(x,1)\sim (x,0)$ for every $x$, and $(1,y)\sim (0,y)$ for every $y$. This generates a torus. This comes from the induced topology from the inclusion into $\R^2$, so the torus is the quotient topology $\R^2/\Z^2$. The torus can also be described as $s^1\times S^1$.
+\end{example}
+\begin{definition}
+$f:X\rightarrow Y$ is a \underline{homeomorphism} if $f$ is continuous, invertible, and $f^{-1}$ is continuous. 
+\end{definition}
+\begin{example}
+$([0,1]\times [0,1])/\sim$ is homeomorphic to $S^1\times S^1$, where $\sim$ is the equivalence relation defined in Example 11.
+\end{example}
+\begin{example}
+Consider $[1,2],[3,4]\subseteq \R$ with the induced topology. Then, take the disjoint union $[1,2]\sqcup [3,4]$. Then, we take the quotient where $1\sim 2 \sim 3\sim 4$. This gives us a figure 8, where the circles touch at $\{1,2,3,4\}$. 
+\end{example}
+\begin{example}
+Let $X$ be a topological space. Consider $[-1,1]$ with the induced topology. Consider $X\times [-1,1]$ with the product topology. We then consider $(x,1)\sim (y,1)$ and $(x,-1)\sim (y,-1)$ for every $x$ and $y$, and take the quotient topology. This then gives a two-sided cone with a circular middle, called the suspension $\Sigma X$. 
+If we consider $S^n$, then $\Sigma S^n\cong S^{n+1}$.
+\end{example}
+\newpage
+\subsection{September 6, 2022}
+Thus far, as a recap, we have covered the following constructions:
+\begin{itemize}
+    \item Induced Topology
+    \item Product Topology
+    \item Disjoint Sum
+    \item Quotients
+\end{itemize}
+We now discuss metric spaces.
+\begin{definition}
+A distance on a set $X$ is a function $d:X\times X\rightarrow [0,\infty)$ such that:
+\begin{enumerate}[(a)]
+    \item $d(x,y)=0\iff x=y$
+    \item $d(x,y)=d(y,x)$
+    \item $d(x,z)\leq d(x,y)+d(y,z)$
+\end{enumerate}
+\end{definition}
+A metric is then another word we use instead of ``distance". $(X,d)$ is thus termed a metric space.
+\begin{example}
+$(\R^n,d)$, where $d(\vec{x},\vec{y})=\sqrt{\displaystyle\sum_{i=1}^n(x_i-y_i)^2}$ 
+\end{example}
+\begin{example}
+$(\R^n,d)$, where $d(\vec{x},\vec{y})=\displaystyle\max_{1\leq i \leq n}{|x_i-y_i|}$
+\end{example}
+\begin{example}
+$([0,1]^A,d)$, where $(x_\alpha)_\beta,(y_\alpha)_\beta\in\displaystyle\prod_{\beta\in B}[0,1]$, and:
+$$d((x_\alpha)_\alpha,(y_\alpha)_\alpha)=\sup_\alpha{|x_\alpha-y_\alpha|}$$
+\end{example}
+A basis for the topology induced by the metric consists of the balls (for $x\in X$ and $\epsilon >0$):
+$$B(x,\epsilon)=\{y|d(x,y)<\epsilon\}$$
+We now prove that these open balls form a basis.
+\begin{proof}
+First, we must check that these cover the entire space. However, it is clear that $X=\displaystyle\bigcup_{x\in X}B(x,\epsilon)$. For another condition, we see that if $B_1=B(x_1,\epsilon_1)$ and $B_2=B(x_2,\epsilon_2)$ are elements of the basis, and if $x\in B_1\cap B_2$, we have to show that there is a $B_3=B(x_3,\epsilon_3)$ such that $x\in B_3\subseteq B_1\cap B_2$. We can construct this geometrically such that we pick $x=x_3$ and $\epsilon_3 <\min{(\epsilon_1-d(x,x_1),\epsilon_2-d(x,x_2))}$. Then, if $y\in B_3$, we have that:
+\begin{align*}
+    d(y,x_1)&<d(y,x)+d(x,x_1)\\
+    &<\epsilon_3 + d(x,x_1)\\
+    &<\epsilon_1-d(x,x_1)+d(x,x_1)\\
+    &=\epsilon_1
+\end{align*}
+Thus, $y\in B_1$, and by the exact same argument, $y\in B_2$, so we have indeed proven that this does form a basis.
+\end{proof}
+We now note that open sets are unions of balls.
+\begin{example}
+On $\R^n$, the standard metric and the max metric from Examples 17 and 18 induce the same topology.
+\end{example}
+\begin{proposition}
+If two metrics have the property that for every ball of the first and every element of it, there is a ball of the second topology centered at this element and included in the first ball, then the second topology is finer than the first.
+$$x\in B'(x,\epsilon')\subseteq B(y,\epsilon),\qquad \forall x\in B(y,\epsilon)$$
+\end{proposition}
+\noindent In Example 20, a disc can be written as a union of squares, and vice versa.
+\begin{example}
+If $(X,d)$ is a metric space, define:
+$$\overline{d}(x,y)=\min{(d(x,y),1)}$$
+Then, $\overline{d}$ is a metric that induces the same topology. \\
+\\
+We first check that $\overline{d}$ is a metric by ensuring that it satisfies the triangle inequality. If $d(x,y),d(y,z),d(x,z)<1$, then:
+\begin{align*}
+    \overline{d}(x,z)&=d(x,z)\\
+    &\leq d(x,y) + d(y,z)\\
+    &=\overline{d}(x,y)+\overline{d}(y,z)
+\end{align*}
+We have a similar case where $d(x,y)$ or $d(y,z)>1$, because we then have $1\leq \overline{d}(x,y)+\overline{d}(y,z)$ holds. Finally, if $d(x,y),d(y,z)<1$, and $d(x,z)>1$, then:
+$$\overline{d}(x,z)\leq d(x,z)<d(x,y) + d(y,z)=\overline{d}(x,y)+\overline{d}(y,z)$$
+\end{example}
+\begin{theorem}
+If $(X,d)$, $(Y,d')$ are metric spaces, then $f:X\rightarrow Y$ is continuous at $x\in X$ if $\forall \epsilon >0$, $\exists \delta >0$ such that $f(B(x,\delta))\subseteq B(f(x),\epsilon)$.
+\end{theorem}
+\begin{definition}
+$f:X\rightarrow Y$ is called uniformly continuous if $\forall \epsilon >0$, $\exists \delta >0$ such that if $d(x,y)<\delta$, then $d'(f(X),f(y))<\epsilon$.
+\end{definition}
+\begin{definition}
+A sequence $(x_n)_{n\geq 1}$ in the metric space $(X,d)$ is called Cauchy if $\forall \epsilon >0$, there exists an $N\in\N$ such that for all $m,n\geq N$, $d(x_m,x_n)<\epsilon$.
+\end{definition}
+\begin{definition}
+A metric space is called \underline{complete} if every Cauchy sequence is convergent.
+\end{definition}
+\begin{definition}
+A \underline{normed vector space} $V$ is a vector space endowed with a function
+$\|\cdot \|: V\rightarrow [0,\infty)$ such that:
+\begin{enumerate}[(a)]
+    \item $\|x\|=0 \iff x=0$
+    \item $\|\lambda x\|=|\lambda| \|x\|,\qquad \lambda\in \R\vee \C$
+    \item $\|x+y\|\leq \|x\|+\|y\|$
+\end{enumerate}
+We define $d(x,y)=\|x-y\|$.
+\end{definition}
+\begin{definition}
+A \underline{Banach space} is a complete normed vector space.
+\end{definition}
+\begin{example}
+$C[0,1]$, $L^p$ spaces, Sobolev spaces, Hardy spaces, Bergman spaces.
+\end{example}
+\newpage
+\noindent \textbf{Manifolds:}
+\begin{definition}[Veblen]
+A manifold $M$ is a Hausdorff topological space endowed with an onto function $$f:\displaystyle\bigsqcup_{\alpha\in A} U_\alpha\rightarrow M$$ such that for every $\alpha$, $U_\alpha$ is an open set in some $\R^n$, where $n$ is the same for all $\alpha$, and $f|U_\alpha$ is a homeomorphism onto the image for each $\alpha$. 
+\end{definition}
+We can define charts here as something of the form:
+$$f_\alpha = f|U_\alpha: U_\alpha\rightarrow f(U_\alpha)\subseteq M$$
+A collection of charts is then an atlas. Also, we get compositions where:
+$$f_\beta^{-1}\circ f_\alpha: U_\alpha\rightarrow U_\beta$$
+\begin{definition}
+We call a topological space \underline{Hausdorff} if for every $x\neq y$, there are open sets $U,V$ such that $x\in U$ and $y\in V$, and $U\cap V=\emptyset$.
+\end{definition}
+\begin{itemize}
+    \item If $f_\beta^{-1}\circ f_\alpha$ is smooth, then the manifold is called smooth. 
+    \item If $\R^n$ is replaced by $\C^n$ and $f_\beta^{-1}\circ f_\alpha$ is holomorphic or analytic then $M$ is called complex.
+\end{itemize}
+\begin{example}
+The circle $S^1=\{z:\ |z|=1\}$. Define $f:\R\rightarrow \C$ such that $f(t)=e^{2\pi it}$. Let $U_1=(-\pi, \pi)$ and $U_2=(0,2\pi)$. Now, we consider a function $g: U_1\sqcup U_2\rightarrow \C$, where $g(t)=e^{2\pi it}$. We can consider $f(U_1)\cap f(U_2)$ as the overlap, and so $f_1^{-1}(f(U_1)\cap f(U_2))=(=\pi,0)\cup (0,\pi)$, and $f_2^{-1}(f(U_1)\cap f(U_2))=(\pi,2\pi)\cup (0,\pi)$.\\
+\\
+Then, $f_2^{-1}\circ f_1 :(-\pi,0)\cup (0,\pi)\rightarrow (\pi,2\pi)\cup (0,\pi)$ is as follows:
+\begin{equation*}
+    f_2^{-1}\circ f_1(t)=\begin{cases}
+    t &,t\in(0,\pi)\\
+    t+2\pi &,t\in(-\pi,0)
+    \end{cases}
+\end{equation*}
+\end{example}
+\begin{theorem}
+If $M_1,M_2$ are manifolds of dimensions $n_1, n_2$, then $M_1\times M_2$ is a manifold of dimension $n_1+n_2$.
+\end{theorem}
+ Consider:
+ $$f:\bigsqcup U_\alpha\rightarrow M_1$$
+ $$g:\bigsqcup V_\beta\rightarrow M_2$$
+ $$f\times g:\bigsqcup U_\alpha\times V_\beta\rightarrow M_1\times M_2$$
+ $$(f\times g)_{\alpha\beta}=(f_\alpha,g_\beta)$$
+ \begin{example}
+ $(S^1)^{\times n}$ is a manifold. In the $n=2$ case, we get $(-\pi, \pi)^2\sqcup (-\pi, \pi)\times (0,2\pi)\sqcup (0,2\pi)\times (-\pi,\pi)\sqcup (0,2\pi)^2$ as our domain, where $f(t,s)=(e^{2\pi it},e^{2\pi is})$, and this gives us the torus.
+ \end{example}
+ \newpage
+ \subsection{September 8, 2022}
+ \begin{example}
+ Consider $\R P^2=\{\hat{x}:\ x\in\R^3\setminus \{0\},x\sim y\iff x=\lambda y, \lambda\neq 0\}$. $\R P^2$ is a manifold, with the following three charts:
+ $$U_1=U_2=U_3=\R^2$$
+ $$f: \displaystyle\bigsqcup_{i=1}^3 U_i\rightarrow \R P^2$$
+ $$f_1(x_1,x_2)=[1:x_1:x_2]$$
+ $$f_2(x_1,x_2)=[x_1:1:x_2]$$
+ $$f_3(x_1,x_2)=[x_1:x_2:1]$$
+ These maps are one-to-one, and onto. We note that $f_2^{-1}\circ f_1: \R^2\rightarrow \R^2$ is the map $(x_1,x_2)\xrightarrow{f_1} [1:x_1:x_2]=\left[\frac{1}{x_1}:1:\frac{x_2}{x_1}\right]\xrightarrow{f_2^{-1}}\left(\frac{1}{x_1},\frac{x_2}{x_1}\right)$
+ \end{example}
+ \begin{example}
+ Consider $\C P^1$. We have that $U_1=U_2=\C$. We define maps as:
+ $$f_1:U_1\rightarrow \C P^1$$
+ $$f_1(z)=[1:z]$$
+ $$f_2: U_2\rightarrow \C P^1$$
+ $$f_2(z)\rightarrow [z:1]$$
+ $$f_2^{-1}\circ f_1:z\rightarrow [1:z]\rightarrow \left[\frac{1}{z}:1\right]\rightarrow \frac{1}{z}$$
+ \end{example}
+ \begin{definition}[Poincar\'e]
+ A smooth manifold is a subspace of $\R^n$ that is locally the graph of a smooth function.
+ \end{definition}
+ 
+ \begin{example}
+ Consider $S^2$. Consider the graph $f(x_1,x_2)=\pm\sqrt{1-x_1^2-x_2^2}$, and similar considerations for the two other orientations. These graphs act as charts from the plane to the sphere.  
+ \end{example}
+ \noindent Now, we return to closed sets!
+ \begin{example}
+ $[a,b], [a,\infty)$
+ \end{example}
+ \begin{example}
+ $$C=[0,1]\setminus\displaystyle\bigcup_{n=1}^\infty \bigcup_{k=0}^{3^{n-1}-1}\left(\frac{3k+1}{3^n},\frac{3k+2}{3^n}\right)$$
+ This set consists of all numbers in $[0,1]$ that admit a ternary representation with only 0's and 2's. Consider a function:
+ $$f: C\rightarrow [0,1]^2$$
+ $$f(0.a_1a_2a_3\cdots) = (0.\frac{a_1}{2}\frac{a_3}{2}\cdots, 0.\frac{a_2}{2}\frac{a_4}{2}\cdots)$$
+ This function is then continuous and onto from $C$ to $[0,1]^2$. By Tietze's Extension Theorem, we get an extention $\tilde{f}:[0,1]\rightarrow [0,1]^2$ which is continuous and onto. This was induced by G. Peano. 
+ \end{example}
+ \begin{example}
+ Sierpi\'nski Triangle. 
+ \end{example}
+ \begin{example}
+ In the discrete topology, every set is clopen
+ \end{example}
+ \begin{example}
+ $\Q\subseteq \R$, $(a,b)$ are clopen in $\Q$.
+ \end{example}
+ \begin{example}
+ In $\R^n$, consider $\overline{B}(x,\epsilon)=\{y:\ d(x,y)\leq \epsilon\}$ as the closed balls.
+ \end{example}
+ \begin{example}
+ The Zariski topology, where $f(z_1,z_2,\cdots, z_n)\in \C[z_1,\cdots,z_n]$, and:
+ $$V(f)=\{(z_1,\cdots, z_n)\in \C^n:\ f(z_1,\cdots, z_n)=0\}$$
+ These are called algebraic sets, or varieties if $f$ is irreducible, and these are the closed sets of the Zariski topology. Unions of algebraic sets are the closed sets of the Zariski topology.
+ \end{example}
+ \begin{proposition}[MAYBE ON EXAM 1]
+ \begin{enumerate}[(1)]
+     \item If $Y$ is a subspace of $X$, then $A\subseteq Y$ is closed if and only if $A=B\cap Y$ where $B\subseteq X$ is closed.
+     \item Let $A\subseteq Y\subseteq X$. If $A$ is closed in $Y$ and $Y$ is closed in $X$, then $A$ is closed in $X$.
+     \item If $A$ is closed in $X$ and $B$ is closed in $Y$, then $A\times B$ is closed in $X\times Y$.
+     \item If $A_\alpha$ is closed in $X_\alpha$ for $\alpha\in I$, then $\displaystyle\prod_{\alpha\in I}A_\alpha$ is closed in $\displaystyle\prod_{\alpha\in I}X_\alpha$ with the product topology.
+ \end{enumerate}
+ \end{proposition}
+ \begin{proof}
+ \begin{enumerate}[(1)]
+     \item $Y\setminus A$ is open. So there is a $U$ such that $Y\setminus A = Y\cap U$. Let $B=X\setminus U$. Then $$A=Y\setminus (Y\setminus A) = Y\setminus (Y\cap U) = Y\setminus U=Y\cap (X\setminus U)=B\cap Y$$
+     Now, if $A=B\cap Y$, then $Y\setminus A=(X\setminus B)\cap Y$.
+     \item $A$ closed in $Y$ and $Y$ closed in $X$ gives us that $X\setminus Y=U$ is open in $X$. Then, $A=Y\cap (X\setminus V)$. Thus $X\setminus A = V\cup U$, so since this is a union of two open sets, it is open, and thus $A$ is closed in $X$.
+     \item $(X\times Y)\setminus (A\times B)= (X\times (Y\setminus B))\cup ((X\setminus A)\times Y)$. These sets are all open, so $A\times B$ is closed.
+     \item Induction! Do the same thing as above as unions.
+     $$\displaystyle\left(\prod_{\alpha\in I}X_\alpha\right) \setminus\left(\prod_{\alpha\in I}A_\alpha\right)=\bigcup_{\alpha\in I}\left(\left(\prod_{\beta\neq \alpha}X_\beta\right)\times (X_\alpha\setminus A_\alpha) \right)$$
+ \end{enumerate}
+ \end{proof}
+ \begin{proposition}
+ Let $X,Y$ be topological spaces. Then, $f:X\rightarrow Y$ is continuous if and only if the preimage of every closed set is closed.
+ \end{proposition}
+ \begin{proof}
+ $$f^{-1}(Y\setminus A)=X\setminus f^{-1}(A)$$
+ \end{proof}
+ \begin{definition}
+ The \underline{closure} of a set $S$ is the smallest closed set containing $S$, denoted $\overline{S}$.
+ \end{definition}
+ \begin{definition}
+ The \underline{interior} of a set $S$ is the largest open set contained in $S$, denoted $Int(S)$.
+ \end{definition}
+ \begin{example}
+ $\overline{\Q}-\R$. $Int(\Q)=\emptyset$
+ \end{example}
+ \begin{example}
+ $B(x,r)=\{y:\ d(x,y)<r\}\implies \overline{B(x,r)}=\{y:\ d(x,y)\leq r\}$.
+ \end{example}
+ \begin{lemma}
+ Let $X$ be a topological space, and $A\subseteq X$. Then, $\overline{X\setminus A}=X\setminus Int(A)$
+ \end{lemma}
+ \begin{proof}
+ $$X\setminus A\subseteq X\setminus Int(A)\implies \overline{X\setminus A}\subseteq \overline{X\setminus Int(A)}=X\setminus Int(A)$$
+ Now, let $x\in X\setminus (\overline{X\setminus A})$. Then there is an open set $U$ such that $x\in U$ and $U\cap (\overline{X\setminus A})=\emptyset$. Thus, $U\cap (X\setminus A)=\emptyset$, so $U\subseteq A$. Therefore, $x\in Int(A)$.  Hence, $x\not\in X\setminus Int(A)$, so $X\setminus Int(A)\subseteq \overline{X\setminus A}$, and we have the double inclusion as desired.
+ \end{proof}
+ \newpage
+ \begin{theorem}
+ Let $A\subseteq X$. Then, $x\in\overline{A}$ if and only if for every open set $U$ such that $x\in U$, we have $U\cap A\neq \emptyset$.
+ \end{theorem}
+ \begin{proof}
+ First, we wish to show that If $x\in\overline{A}$ and $U$ is open where $x\in U$, then $U\cap A\neq\emptyset$. If, for the sake of contradiciotn, $U\cap A=\emptyset$, then $U\subseteq Int(X\setminus A)$, so $X\setminus Int(X\setminus A)=\overline{X\setminus (X\setminus A)}=\overline{A}$, which does not contain $x$, and so we get a contradiction.\\
+ \\
+ Conversely, if $x$ has the property that every open set $U$ containing $x$ intersects $A$, then $x\not\in Int(X\setminus A)$. So $x\in X\setminus Int(X\setminus A)=\overline{X\setminus(X\setminus A)}=\overline{A}$. Thus, we are done.
+ \end{proof}
+ \begin{proposition}[Midterm maybe]
+ \begin{enumerate}[1)]
+     \item Let $Y\subseteq X$, with the subspace topology. If $A\subseteq Y$, then let us denote $\overline{A}_X$ as the closure of $A$ in $X$. Then, the closure of $A$ in $Y$ is $\overline{A}_X\cap Y$.
+     \item Taking the same conditions as above, if $Y$ is closed in $X$, then the closure of $A$ in $X$ and $Y$ is the same.
+     \item $\displaystyle \prod_{\alpha\in I}\overline{A}_\alpha=\overline{\prod_{\alpha\in I}A_\alpha}$
+ \end{enumerate}
+ \end{proposition}
+ \begin{proof}
+ \textbf{1):}\\
+ \\
+ Let $x\in\overline{A}_X\cap Y$. Then, for every open set $U$ in $X$ containing $x$, $U\cap A\neq \emptyset$. So $(U\cap Y)\cup A\neq \emptyset$. But $U\cap Y$ with $U$ open in $X$ are all open subsets of $Y$. By Theorem 3, $x$ is in the closure of $A$ in $Y$. Thus, $\overline{A}_X\cap Y\subseteq \overline{A}_Y$.\\
+ \\
+ Conversely, $\overline{A}_X\cap Y$ is closed and contains $A$, so the closure of $A$ in $Y$ is contained in $\overline{A}_X\cap Y$.\\
+ \\
+ \textbf{2):}\\
+ \\
+ if $Y$ is closed, then $\overline{A}_X\subseteq \overline{Y}=Y$. So $\overline{A}_X\cap Y = \overline{A}_X$.\\
+ \\
+ \textbf{3):}\\
+ \\
+ Let $x=(x_\alpha)_\alpha\in \displaystyle\prod_{\alpha\in I}\overline{A}_\alpha$. Let $\displaystyle\prod_{j=1}^nU_{\alpha_j}\times \prod_{\beta\neq \alpha_j}X_\beta$, or $\displaystyle\prod_{\alpha\in I}U_\alpha$ such that $x_\alpha\in U_\alpha$. Then, by Theorem 3, $U_\alpha\cap A_\alpha\neq \emptyset$, for all $\alpha$, and $X_\beta\cap A_\beta\neq\emptyset$, for all $\beta\neq\alpha$. It follows that in either case, the open set intersects $\displaystyle\prod A_\alpha$. Thus, $\displaystyle\prod \overline{A}_\alpha\subseteq \overline{\prod A_\alpha}$. Conversely, let $x\in \overline{\displaystyle\prod A_\alpha}$. Then, every open set containing $x$ intersects $\displaystyle\prod A_\alpha$. Choose $U$ of either form as expressed in the previous direction, and we get coordinate-wise nonempty intersections. Vary $U_\alpha$'s to make them be any open set that contains $x_\alpha$. You then obtain the reverse inclusion, and thus we are done.      
+ \end{proof}
+ \noindent This result does not hold for interiors as seen in the following examples:
+ \begin{example}
+ $\Q\subseteq \R$. $Int*\Q)\neq \emptyset$,  but the interior of $\Q$ in $\Q$ is $\Q$. 
+ \end{example}
+ However, the third case of the proposition works for interiors in the box topology but not the product topology. 
+ \begin{example}
+ $[0,1]\subseteq \R$, $Int([0,1])=(0,1)$. However:
+ $$\displaystyle\underbrace{\prod_{i=1}^\infty (0,1)}_{\text{not an open set}}\subseteq \prod_{i=1}^\infty\R$$
+ \end{example}
+ \begin{proposition}
+ Let $X,Y$ be topological spaces. $f:X\rightarrow Y$ is continuous if and only if for every subset $A\subseteq X$, we have $f(\overline{A})\subseteq \overline{f(A)}$
+ \end{proposition}
+ \begin{proof}
+ Assume $f$ is continuous. Then $f^{-1}(Y\setminus \overline{f(A)})$ is open. This is the complement of $f^{-1}(\overline{f(A)})$, so this set is open. Then $A\subseteq f^{-1}(\overline{f(A)})$, so $\overline{A}\subseteq f^{-1}(\overline{f(A)})\implies f(\overline{A}\subseteq \overline{f(A)}$.\\
+ \\
+ Conversely, let $B\subseteq Y$ be open. we want to show $f^{-1}(B)$ is open. Let $A=X\setminus f^{-1}(B).$ Then:
+ $$f(\overline{A})\subseteq \overline{f(A)}=\overline{f(X\setminus f^{-1}(B))}=\overline{Y\setminus B} = Y\setminus B$$
+ Thus, $f(\overline{A}\subseteq Y\setminus B$, but $A=X\setminus f^{-1}(B)$, so $A=\overline{A}$, and we are done
+ \end{proof}
+ \begin{definition}
+ $x$ is a \underline{limit point} for $A$ if for every $U$ open such that $x\in U$, there is $x'\neq x$ such that $x'\in A\cap U$. We denote $A'$ to be the set of limit points of $A$
+ \end{definition}
+ \begin{example}
+ $$A=\{\frac{1}{n}:\ n\in\N\}$$
+ $A$ has only 1 limit point, namely 0. 
+ \end{example}
+ \begin{proposition}
+ $$\overline{A}=A\cup A'$$
+ \end{proposition}
+ \begin{corollary}
+ A subset of a topological space is closed if and only if it contains all of its limit points.
+ \end{corollary}
+ \begin{definition}
+ In an arbitrary topological space, one says that a sequence is convergent to $x\in X$ if for every neighbourhood $V$ of $x$, there is an $N$ such that for all $n\geq N$, $x_n\in V$
+ \end{definition}
+ \noindent Note: IN the Zariski topology, a sequence with no constant subsequence converges to every point in the space. The definition is fine in metric spaces. In every metric space, the limit is unique.
+ \begin{proposition}
+ In metric spaces, the limit is unique. 
+ \end{proposition}
+ \begin{proof}
+ If $x_1$, $x_2$ are both limits of a sequence, consider the open ball with radius $\frac{d(x_1,x_2)}{2}$. All but finitely many terms lie in each of the disjoint balls. 
+ \end{proof}
+ \begin{lemma}[Sequence Lemma]
+ Let $X$ be a metric space.
+ \begin{enumerate}[(a)]
+     \item $x\in\overline{A}$ if and only if there is a sequence in $A$ converging to $x$.
+     \item $x\in A'$ if and only if there is a sequence of points in $A$ that does not eventually become constant that converges to $x$. 
+ \end{enumerate}
+ \end{lemma}
+ \begin{proof}
+ Recall that $\overline{A}= A\cup A'$. If $x\in A$, then $x_n=x$ for all $n$ converges to $x$. Thus, it suffices to prove part $(b)$.\\
+ \\
+ Let $x\in A'$. For $n\in\N$, consider $B(x,\frac{1}{n})$. Since $x\in A'$, there is $x_n\in A\cap B(x,\frac{1}{n}$ such that $x_n\neq x$. Now, let $\epsilon >0$, and choose $K(\epsilon)$ so that $\frac{1}{K(\epsilon)}<\epsilon$. Then, for $n\geq K(\epsilon)$, $x_n\in B(x,\frac{1}{n})\subseteq B(x,\frac{1}{K(\epsilon)}\subseteq B(x,\epsilon)$. Convsersely, if $x_n\rightarrow x$, $x_n\in A$, $x_n$ not eventually constant. We consider an open set $U$ containing $x$. Let $B(x,\epsilon)\subseteq U$. There is a $K(\epsilon)$ such that for all $n\geq K(\epsilon)$, $x_n\in B(x,\epsilon)$. From these, we can choose a term that is not $x$. The definition of $a'$ is thus fulfilled, and so we are done
+ \end{proof}
+ \begin{theorem}
+ Let $X,Y$ be metric spaces. Then, $f:X\rightarrow Y$ is continuous if and only if for every convergent sequence $x_n\in X$, the sequence $f(x_n)$ is convergent in $Y$ 
+ \end{theorem}
+ \begin{proof}
+ For $x_n\rightarrow x$, consider $B(f(x),\epsilon)$. Then $f^{-1}(B(f(x),x))$ is an open neighbourhood of $x$. Thus, there is an integer $K(\epsilon)\in \N$ such that for all $n\geq K(\epsilon)$, $x_n\in f^{-1}(B(f(x),\epsilon))$. Thus, for all $n\geq K(\epsilon)$, $f(x_n)\in B(f(x),\epsilon))$, so $f(x_n)$ is convergent in $Y$.\\
+ \\
+ Conversely, assume that $x_n$ converges to $x$. Consider $x_1,x,x_2,x,x_3,x\cdots$. This converges to $x$. Then $f(x_1),f(x),f(x_2),f(x),\cdots$ converges by hypothesis. Since it has a constant subsequence equal to $f(x)$, the sequence itself converges to $f(x)$. The conclusion then follows from Proposition 11.
+ \end{proof}
+ \begin{definition}
+ $X$ is Hausdorff if for every $x,y\in X$, $x\neq y$ there are open sets $U,V$ such that $x\in U$, $y\in V$, $U\cap V=\emptyset$.
+ \end{definition}
+ \begin{theorem}
+ If $X$ and $Y$ are homeomorphic, and $X$ is Hausdorff, then $Y$ is Hausdorff.
+ \end{theorem}
+ \begin{proof}
+ Consider $h:Y\rightarrow X$, a homeomorphism. Let $x,y\in Y$. Then $f(x)\neq f(y)$. There are disjoint open sets $U$ and $V$ in $X$ containing these 2 points separately. THe open sets $f^{-1}(U)$ and $f^{-1}(V)$ contain $x$ an $y$ respectively and are disjoint.
+ \end{proof}
+ \begin{remark}
+ Hausdorff is a topological property.
+ \end{remark}
+ \begin{example}
+ Consider $\C^n$ with the standard topology and $\C^n$ with the Zariski Topology. These are NOT homeomorphic. One is Hausdorff and the other is not.
+ \end{example}
+ \begin{definition}
+ A topological space $X$ is not connected if there exist two open sets $U,V$ such that $U\cup V = X$ and $U\cap V=\emptyset$.
+ \end{definition}
+ \begin{example}
+ $(-\infty,0)\cup (0,\infty)$ is not connected.
+ \end{example}
+ \noindent If a space is not ``not connected", then it is connected.
+ \begin{example}
+ $\Q$ is not connected.
+ \end{example}
+ \begin{proposition}
+ \begin{enumerate}[(a)]
+ \item
+ If $A,B\subseteq X$ are disjoint subsets such that $A\cup B=X$ and neither of these sets contains a limit point of the other. Then, they form a separation of $X$. 
+\item If $U,V$ form a separation of $X$ and if $Y\subseteq X$, $Y$ connected, then $Y$ lies entirely inside $U$ or $V$.
+ \end{enumerate}
+ \end{proposition}
+ \begin{proof}
+ \textbf{(a)}:\\
+ \\
+ Since neither contain limit points of the other, $\overline{A}=A$ and $\overline{B}=B$, so $A$ and $B$ are closed. Then, $A=X\setminus B$ and $B=X\setminus A$ are open, and form a separation.\\
+ \\
+ \textbf{(b):}\\
+ \\
+ Consider $\cap U$ and $Y\cap V$. $\overline{Y\cap U}\subseteq U$., and $\overline{Y\cap V}=V$. Thus, $\overline{Y\cap U}\cap \overline{Y\cap V}=\emptyset$, so $Y$ is entirely in $A$. 
+ \end{proof}
+ \begin{proposition}
+ \begin{enumerate}[1)]
+     \item The union of the collection of connected sets that share one point is connected. 
+ \end{enumerate}
+ \end{proposition}
+ \begin{proof}
+ Let us assume that $X_\alpha$, $\alpha\in A$ are connected, $x\in X_\alpha$ for all $\alpha$. Let us assume there is separation $U\cup V= \displaystyle\cup_{\alpha\in A}X_\alpha$. Then, there is a $y\in\displaystyle\bigcup_{\alpha\in A}X_\alpha$ such that $x,y$ are in different sets $U,V$. However, $y\in X_\alpha$ for some $\alpha$, and $U\cap X_\alpha$< $V\cap X_\alpha$ are open, disjoint and $(U\cap X_\alpha) \cup (V\cap X_\alpha)=X_\alpha$. $x$ is in one, $y$ is in the other. This then forms a separation of $X_\alpha$, and we get a contradiction.
+ \end{proof}
+ \end{document}
