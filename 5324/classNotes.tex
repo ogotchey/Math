@@ -593,4 +593,93 @@ If $M_1,M_2$ are manifolds of dimensions $n_1, n_2$, then $M_1\times M_2$ is a m
  \begin{proof}
  Let us assume that $X_\alpha$, $\alpha\in A$ are connected, $x\in X_\alpha$ for all $\alpha$. Let us assume there is separation $U\cup V= \displaystyle\cup_{\alpha\in A}X_\alpha$. Then, there is a $y\in\displaystyle\bigcup_{\alpha\in A}X_\alpha$ such that $x,y$ are in different sets $U,V$. However, $y\in X_\alpha$ for some $\alpha$, and $U\cap X_\alpha$< $V\cap X_\alpha$ are open, disjoint and $(U\cap X_\alpha) \cup (V\cap X_\alpha)=X_\alpha$. $x$ is in one, $y$ is in the other. This then forms a separation of $X_\alpha$, and we get a contradiction.
  \end{proof}
+\begin{theorem}
+	If $X$ is a connected top. sp. and if $f:X\rightarrow{Y}$ is continuous, then $f(X)$ is connected.
+	\end{theorem}
+\begin{proof}
+	By contradiction.  Assume that $f(X)$ has a separation.  Then there exist disjoint open sets $U,V\in f(X)$ such that $U\cup V=f(X)$.  Then
+	\begin{equation*}
+	f^{-1}(U\cup V) = f^{-1}(U)\cup{}f^{-1}(V) = (f^{-1}\circ{f})(X) = X
+	\end{equation*}
+	and $f$ being continuous implies that the preimages of $U$ and $V$ are both open, and furthermore $U\cap{V}=\varnothing\implies{}f^{-1}(U)\cap{}f^{-1}(V)=\varnothing$, so these sets form a separation of $X$, contradiction.
+\end{proof}
+\begin{proposition}
+	\begin{enumerate}
+		\item The union of connected sets that have one point in common is connected
+		\item If $A$ and $B$ are spaces such that, $\bar{A}=B$, then $B$ is connected iff $A$ is connected.
+		\item The product of connected spaces is connected in the product topology
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\textbf{1.} (Already done, see above) \\
+	\textbf{2.} (Already done, see above) \\
+	\textbf{3.}\\
+	We start with the finite case:\\Let $X$, $Y$ be connected. Choose $x_0\in X$ and $y_0\in Y$.  Then $(X\times \{y_0\})\cup(\{x_0\}\times{Y})$ is connected, being the union of the connected spaces $X\times\{y_0\}$ and $\{x_0\}\times{Y}$, sharing $(x_0,y_0)$.\\Next, the union
+	\begin{equation*}
+	(X\times\{y_0\})\cup(\{x\}\times{Y})
+	\end{equation*}
+	is connected for any $x\in X$ by the same argument, since the two share $(x,y_0)$.  Hence
+	\begin{equation*}
+	X\times Y = \cup_{x\in X}((X\times\{y_0\})\cup(\{x_0\}\times{Y}))
+	\end{equation*}
+	is connected since all sets in the union share $(x_0,y_0)$.\\Now for the infinite case.   Let us consider:\\
+	\begin{equation*}
+	\prod_{\alpha\in I}(X_\alpha)
+	\end{equation*} where $I$ is some infinite family, and where $X_\alpha$ is connected for all $\alpha\in I$.  Choose any point $(a_\alpha)_{\alpha\in I}$.  Consider sets of the form:
+	\begin{equation*}
+	X_{\alpha_1}\times{}X_{\alpha_2}\times\cdots\times X_{\alpha_n}\times \prod_{\beta\neq\alpha}(a_\beta)
+	\end{equation*}
+	They are connected, and contain $(a_\alpha)$.  Then
+	\begin{equation*}
+	\cup_{\alpha_1,\alpha_2,\cdots,\alpha_n\in I}(X_{\alpha_1}\times X_{\alpha_2}\times\cdots\times X_{\alpha_n}\times\prod_{\beta\neq\alpha}\{a_\beta\})
+	\end{equation*}
+	is connected.  We will show this set is dense in $\prod_{\alpha\in I}(X_\alpha)$.\\
+	Let $(x_\alpha)_{\alpha\in I} \subset \prod X_\alpha$.  Let $U$ be an open neighborhood of $(x_\alpha)$ in the product topology.  The claim is that $U\cap A\neq\varnothing$.  Consider a basis element 
+	\begin{equation*}
+	U_{\alpha_1}\times U_{\alpha_2}\times\cdots\times U_{\alpha_n}\times\prod_{\beta\neq\alpha_i}(X_\beta)
+	\end{equation*}
+	be a basis element inside $U$ containing $(x_\alpha)$.  It contains the point
+	\begin{equation*}
+	\{x_{\alpha_1}\}\times\{x_{\alpha_2}\}\times\cdots\times\{x_{\alpha_N}\}\times\prod_{\beta\neq\alpha_i}\{a_\beta\}
+	\end{equation*}  This point lies in
+	\begin{equation*}
+	X_{\alpha_1}\times X_{\alpha_2}\times\cdots\times X_{\alpha_n}\times\prod_{\beta\neq\alpha_i}\{a_\beta\}
+	\end{equation*}
+	Therefore, $A$ is connected, and the closure $\bar{A} = \prod_{\alpha\in I}X_\alpha$ so the latter is connected
+\end{proof}
+\begin{definition}
+	A \textit{connected component} of a topological space $X$ is a maximal (under set inclusion) connected subspace
+\end{definition}
+\begin{theorem}
+	Every topological space can be partitioned into connected components
+\end{theorem}
+\begin{proof}
+	Define a relation on points in $X$: for all $x,y \in X$, let $x\sim{y}$ if $y$ is in the connected component of $x$.  Then this relation is in fact an equivalence relation, which partitions $X$ into equivalence classes, which are in fact connected components.  
+\end{proof}
+\begin{remark}
+	The number of connected components of a topological space $X$ is a numerical invariant modulo homeomorphisms.
+\end{remark}
+\begin{definition}
+	A topological space $X$ is locally connected if every point $x\in X$ and every open neighborhood $U(x)$ containing $x$, there is a connected open set $V$ such that $x\in V\subset U$. 
+\end{definition}
+\begin{proposition}
+	A topological space $X$ is locally connected iff the connected components of every open set are open.
+\end{proposition}
+\begin{proof}
+	Suppose the space $X$ is locally connected.  If $U$ is an open set, the for every $x\in U$, then there is a connected open set $V_x\subset U$ with $x\in V_x$.  Let $C$ be the connected component of $U$ containing $x$.  Then $V_x\subset C$ because if it weren't, then $C\subsetneq C\cup V_x\subset U$, contradicting the maximality of $C$. Thus, $C$ is exactly the union $C = \cup_{x\in C}V_x \subset U$, and is therefore open.  Conversely, let $X$ be such that the connected components of every open set are open.  Then, given an open set and a point $x\in U$, the connected component of $U$ containing $x$ is open, so $x\in V\in U$, which is exactly the requirement for local connectedness. 
+\end{proof}
+Not all connected spaces are locally connected
+\begin{example}
+	The comb
+\end{example}
+\begin{theorem}{connected sets in $\R$}
+	A subset $U\subset\R$ is connected if and only if it is a point, interval, or $R$.
+\end{theorem}
+\begin{proof}
+	If $A\subset R$ is none of these, then there are $a,b \in A$ and $c\not\in A$ such that $a<c<b$.  But then $(-\infty,c)\cup(c,\infty)$ is a separation of $A$.\\Conversely, assume $A$ is not a point or $\R$, so let it be an interval.  Set $A=U\cup V$, and $U\cap V=\varnothing$, where $U,V$ are both open.  Then $U,V$ are both closed.  Let $a\in U$, $b\in V$, $a<b$.  Define $c=\sup\{x\in U,x<b\}$ Then $c\in \bar{U}\cap\bar{V}$ (contradiction).
+	\end{proof}
+\begin{example}
+	$S^1$ is connected: $f: \R\rightarrow S^1: f(t) = e^{it}$ is a continuous function mapping a connected top space, $\R$ onto $S^1$.
+	However, $\R$ and $S^1$ are not homeomorphic: let $g$ be a homeomorphism between them.  Then consider $g(\R\setminus\{0\}) = S^1\setminus\{g(0)\}$, but $\R\setminus\{0\}$ is disconnected, while $S^1\setminus\{g(0)\}$ remains connected. (contradiction)
+\end{example}
  \end{document}
