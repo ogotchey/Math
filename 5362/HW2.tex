@@ -114,6 +114,27 @@
 	For $p$ an odd prime, the discriminant of the cyclotomic field $\Q(\zeta_p)$ equals $(-1)^{\frac{p-1}{2}}p^{p-2}$
 \end{proposition}
 \begin{proof}
-	The discriminant of a general cyclotomic field $\Q(\zeta_p)$ is given by 
+	The discriminant of a general cyclotomic field $\Q(\zeta_n)$, where $\zeta_n$ is taken to be primitive, is given by: $$D(\Q(\zeta_n)) = (-1)^{\frac{\phi(n)}{2}}\frac{n^{\phi(n)}}{\prod_{p|n}p^{\frac{\phi(n)}{p-1}}}$$Since $p$ is an odd prime, then $\phi(p)=p-1$ and $\prod_{q|p}q^\frac{\phi(p)}{p-1} = p$.  Substituting, we have:
+	$$D(\Q(\zeta_p)) = (-1)^{\frac{p-1}{2}}\frac{p^{p-1}}{p}=(-1)^{\frac{p-1}{2}}p^{p-1}$$
+\end{proof}
+\section{Problem V}
+\begin{proposition}
+	Let $\theta:=\sqrt[3]{12}$.  Then $x:=\frac{1}{2}\sqrt[3]{12}\in\scrO_{\Q(\theta)}$, but $x$ does not lie in the $\Z$-span of $\{1,\theta,\theta^2\}$.
+\end{proposition}
+\begin{proof}
+	\begin{equation*}
+	x = \frac{\sqrt[3]{12}}{2} = -\frac{\sqrt[3]{12}}{2}(e^{\frac{2\pi i}{3}}+e^{\frac{4\pi i}{3}})
+	\end{equation*}
+	Let $y_1 := \sqrt[3]{12}e^{\frac{2\pi i}{3}}$ and $y_2 := \sqrt[3]{12}e^{\frac{4\pi i}{3}}$.  Then
+	\begin{align*}
+	x &= -(y_1+y_2)\\
+	x^3 &=(y_1^3+3y_1^{2}y_2+3y_1y_2^2+y_2^3)\\
+	y_1^3 = y_2^3 &= 12\\
+	y_1^2 &= (\sqrt[3]{12})y_2\\
+	y_2^2 &= (\sqrt[3]{12})y_1\\
+	3y_1^{2}y_2+3y_1y_2^2 &= (3\cdot{12})(y_1^2+y_2^2) = -6x\\
+	x^3 &= -\frac{1}{8}(12-6x+12)
+	\end{align*}
+	Proof incomplete.
 \end{proof}
 \end{document}
