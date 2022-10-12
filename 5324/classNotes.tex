@@ -682,4 +682,119 @@ Not all connected spaces are locally connected
 	$S^1$ is connected: $f: \R\rightarrow S^1: f(t) = e^{it}$ is a continuous function mapping a connected top space, $\R$ onto $S^1$.
 	However, $\R$ and $S^1$ are not homeomorphic: let $g$ be a homeomorphism between them.  Then consider $g(\R\setminus\{0\}) = S^1\setminus\{g(0)\}$, but $\R\setminus\{0\}$ is disconnected, while $S^1\setminus\{g(0)\}$ remains connected. (contradiction)
 \end{example}
+\subsection{September 29, 2022}
+Recall:
+\begin{definition}
+	A topological space $X$ is connected if $$X=U\cup V\implies U=\varnothing\lor V=\varnothing$$ for any disjoint open sets $U,V$
+\end{definition}
+\begin{theorem}
+	The connected subsets of $\R$ are exactly \begin{itemize}
+		\item $\R$
+		\item $\{x\}$
+		\item Open and/or closed intervals in $\R$.
+	\end{itemize}
+\end{theorem}
+\begin{theorem}
+	Let $f: [a,b]\rightarrow [a,b]$ be a continuous functions.  Then there is a fixed point in $[a,b]$ under $f$.  i.e. there exists some $c\in[a,b]$ such that $f(c) = c$
+\end{theorem}
+\begin{proof}
+	Consider the function $g: [a,b]\to\R$ given by $$g(x)=f(x)-x$$Then $g$ is continuous, so $g([a,b])$ is a connected set.  We have $g(a)\geq0$ and $g(b)\leq 0$.  Thus, there is some point $c\in[a,b]$ at which $g(c)=0$. i.e. $f(c)-c=0$ or $f(c)=c$
+\end{proof}
+\begin{theorem}[Borsuk-Ulam]
+	Given a continuous function $f: S^1\to\R$, there exist two antipodal points $z,-z$ such that $f(z)=f(-z)$.
+\end{theorem}
+\begin{proof}
+	$S^1$ is connected.  $f(S^1)$ is therefore connected, as $f$ is continuous.  Consider another function: $$g: S^1\to\R\;\;  z\xrightarrow{g}f(z)-f(-z)$$Then $$g(z)=-g(-z)$$, but then there must be some $c$ such that $g(c)=0$ 
+\end{proof}
+\begin{theorem}
+	Given two regions in the plane, there is a line that cuts them simultaneously into two equal halves.
+\end{theorem}
+\begin{proof}
+	Pick any point in $\R^{2}$ and parameterize in $S^1$ (directed) lines through that point : $L(\theta)$.  Then there are lines $V_1(\theta)$ and $V_2(\theta)$ , which are perpendicular to $L(\theta)$ and which divide the first and second regions in half, respectively.  Let $v_1(\theta)$ and $v_2(\theta)$ be the points at which $V_1$ and $V_2$ intersect $L(\theta)$.  Then $$v_1(\theta)-v_2(\theta)=-(v_1(-\theta)-v_2(-\theta))$$, so by the previous theorem there is some $\theta\in S^1$ which makes these lines the same.
+\end{proof}
+\begin{definition}
+	A topological space $X$ is called "path connected" if for every $x,y\in X$, there is a continuous function $f:[0,1]\to X$ such that $f(0)=x$ and $f(1)=y$.
+\end{definition}
+\begin{theorem}
+	Every path connected space is connected
+\end{theorem}
+\begin{proof}
+	Fix $x_0\in X$.  Then $$X=\cup_{\substack{f(0)=x_0\\f(1)=y	}}(f_y([0,1]))$$  But the union of connected spaces sharing a single point is connected.
+\end{proof}
+In general, if $X$ is a topological space, we say that $$x\sim y$$ if there is a path from $x$ to $y$.
+\begin{proposition}
+	Let $X$ be a topological space.  Let $\sim$ be a relation defined on points of $X$ such that $x\sim y$ if there exists a path from $x$ to $y$.  Then $\sim$ is an equivalence relation.
+\end{proposition}
+\begin{proof}
+	\begin{itemize}
+		\item $x\sim y$ implies the existence of a path $f: [0,1]\rightarrow X$ such that $f$ is continuous, $f(0)=x$ and $f(1)=y$, but then $g: [0,1]\rightarrow X$ defined by $g(t) = f(1-t)$ is also continuous, and $g(0)=f(1)=y$, and $g(1)=f(0)=x$, so $g$ is a path from $y$ to $x$.  Hence, $y\sim x$
+		\item $x\sim x$, because $f(t) = x$ is a path.
+		\item Let $x\sim y$ and $y\sim z$, so there exist continuous functions, $f,g: [0,1]\rightarrow X$ such that $f(0)=x$, $f(1)=g(0)=y$, $g(1)=z$, then let $$h(t) := \begin{cases}
+		f(zt), t\in[0,\frac{1}{2}]\\
+		f(zt-1), t\in[\frac{1}{2},1]
+		\end{cases}$$.	But then $h$ is a path from $x$ to $z$, whence $x\sim z$\end{itemize}
+\end{proof}
+\begin{remark}
+	Topological spaces are partitioned into path-connected components by $\sim$.
+\end{remark}
+\begin{theorem}
+	\begin{enumerate}[i.]
+		\item The union of path-connected topological spaces sharing a single point is path-connected.
+		\item The product of path-connected topological spaces is path-connected.
+		\end{enumerate}
+\end{theorem}
+\begin{proof}
+	Let $X_\alpha\,,\alpha\in A$ be path connected spaces with $p\in\cap_{\alpha\in A}X_\alpha$.  Let $r,s$ be points in $\cup_{\alpha\in A}X_\alpha$.  Then there is some $\beta_1,\beta_2$ in $A$ such that $r\in X_{\beta_1}$ and $s\in X_{\beta_2}$.  Then there exist paths from $r$ to $p$ and $p$ to $s$, so simply concatenate them.\\
+	(b) Pick two points $x,y$ in $X:=\prod_{\alpha\in A}X_\alpha$.  Then for every $\alpha\in A$, there exists a continuous function $f_\alpha: [0,1]\to X_\alpha$ such that $f$ is continuous, $f_\alpha(0)=\pi_\alpha(x)$ and $f_\alpha(1)=\pi_\alpha(y)$, but then by the universal property there exists a unique function $f:[0,1]\to X$ such that $f(0)=x$ and $f(1)=y$, but according to the product topology then $f$ must be continuous, i.e. a path.
+\end{proof}
+\begin{definition}
+	A topological space is called "locally path-connected" if every open neighborhood of any point $x$ contains a path-connected open set, itself containing $x$.
+\end{definition}
+\begin{proposition}
+	A space is locally path-connected if and only if the path components of every open set are open.
+\end{proposition}
+\begin{proof}
+	Assume all of the path components of $X$ are open.  For any open neighborhood $U$ of $x$, choose the path component of $U$ containing $x$ as $V$.  Conversely, let $X$ be locally path-connected.  Let $U$ be open, and let $C$ be a path component of $U$.  For every $x\in C$, choose $V_x$ to be open, path connected, and $x\in V_x\subset U$.  Then $V_x\subset C$, and $C\subset\cup_{x\in C}V_x$.
+\end{proof}
+\begin{example}[Deleted Comb]
+	Not all connected spaces are path-connected
+\end{example}
+\begin{proof}[Proof (of example)]
+Let the "deleted comb" $C$ be defined: $$C:=((0,1] \times \{0\}) \cup ((\{0\}\times (0,1])) \cup (\bigcup_{n=1}^{\infty}(\{\frac{1}{n}\}\times [0,1]))$$
+Then $C$ is connected, but not path-connected.
+\end{proof}
+\begin{example}[Comb]
+	The comb is locally path-connected but not path-connected.
+\end{example}
+\begin{definition}[Compact Spaces]
+	A topological space $X$ is called "compact" if it is Hausdorff and if every open cover of $X$ admits a finite subcover.
+\end{definition}
+\subsection{October 11, 2022}
+\begin{theorem}[Lebesgue's Number Theorem]
+	Let $X$ be a compact metric space, and let $U$ be an open cover of $X$.  Then there exists a real $\delta>0$ with the property that, for any open set $A\subset X$ with $\textsf{diam}(A)\leq\delta$, then there is some $U_i\in U$ containing $A$.
+\end{theorem}
+\begin{corollary}
+	Let $f: X\rightarrow Y$ be a continuous function of metric spaces, and let $X$ be compact.  Then $f$ is uniformly continuous.
+\end{corollary}
+\begin{proof}
+	Let $\epsilon>0$.  For $x\in X$, there is $\delta_x>0$ such that if $d_X(x,y)<\delta_x$ then $d_Y(f(x),f(y))<\frac{\epsilon}{2}$.  Let $\delta>0$ be the Lebesgue number of the open cover of $X$ by the balls $B(x,\delta_x)$.  If $x,y$ are such that $d(x,y)<\delta$, then there is $B(x_o,\delta_{x_o})$ such that $x,y\in B(x_o,\delta_{x_o})$ then $$d(f(x),f(y))<d(f(x),f(x_o))+d(f(x_o),f(y))<\frac{\epsilon}{2}+\frac{\epsilon}{2}=\epsilon$$
+\end{proof}
+\begin{theorem}[AM-GM Inequality]
+	If $x_1,x_2,..,x_n >0$, then 
+	\begin{equation}
+	\frac{1}{n}\sum_{i=1}^n(x_i) \geq \sqrt[n]{\prod_{i=1}^n(x_i)}
+	\end{equation}, with equality if and only if $x_i=x_j$ for all $1\leq i\leq j\leq n$
+\end{theorem}
+\begin{proof}
+	The inequality is invariant under simultaneous multiplication of $x_i$ by $\lambda >0$, so we assume without loss of generality that $\sum_{i=0}^n(x_i)=1$.  Furthermore, the result is trivial if $x_i=0$ for any $1\leq i\leq n$, so we consider $$X:=\{(x_1,x_2,...,x_n)|\sum_{i=0}^n(x_i)=1\land x_i\geq0\:\forall 1\leq i\leq n\}$$.  $X$ is closed and bounded, and thus it is compact.  For any pair $x_i, x_j\in X$, $x_i<x_j$, let $\epsilon<x_j-x_i$.  Then $$(x_i+\epsilon)(x_j-\epsilon) = x_ix_j + \epsilon(x_j-x_i-\epsilon) > x_ix_j$$.\\ Now, let $f:X\rightarrow \R$ be defined by $$f(x_1,...,x_n) := \sqrt[n]{x_1x_2\cdots x_n}$$.  If not all $x_i$ are equal, choose $x_i<x_j$ and replace them with $x_i+\epsilon$, $x_j+\epsilon$, respectively.  The sum $$x_1+...+x_i+\epsilon+...+x_j-\epsilon+...+x_n=1$$But: $$f(x_1,...,x_i+\epsilon,...,x_j-\epsilon,...,x_n)>f(x_1,...,x_n)$$So $f$ does not attain a maximum on $X$ unless all points are equal.  So the max is $(\frac{1}{n},\frac{1}{n},...,\frac{1}{n})$, completing the proof.
+\end{proof}
+\begin{example}[Balkam Math Olympiad 1984]
+	Let $\alpha_1,\alpha_2...,\alpha_n>0$ and $\sum_{i=0}^n(\alpha_i)=1$, prove that $$\sum_{i=0}^n (\frac{\alpha_i}{2-\alpha_i})\geq\frac{n}{2n-1}$$
+\end{example}
+\begin{theorem}
+	If $X,Y$ are compact spaces, then $X\times Y$ is compact.
+\end{theorem}
+\begin{proof}
+	Consider an open cover $U$ of $X\times Y$.  Fix $x_o\in X$, and note that $U$ is also a cover for $\{x_o\}\times Y$.  This has a subcover $$U':=\{U_1^{x_o},U_2^{x_o},...,U_n^{x_o}\}$$.  By the tube lemma, there is $W_{x_o}\subset X$ open such that $$\{x_o\}\times Y\subset W_{x_o}\times Y\subset U'$$.  Vary $x_o$ to obtain the open cover $(W_{x_o})_{x_o\in X}$ of $X$.  There are finitely many $x_o$'s, call them $x_1,...,x_n$, such that $$\bigcup_{i=1}^n(W_{x_i})=X$$.  Each $W_{x_i}\times Y$ is covered by finitely many $u\in U$.  So the union $\bigcup_{i=0}^n(W_{x_i}\times Y)$ is itself covered by finitely many elements in $U$, so $X\times Y$ has a finite subcover, finishing the proof.
+\end{proof}
  \end{document}
