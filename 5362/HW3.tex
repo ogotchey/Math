@@ -1,0 +1,209 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{chunk}[theorem]{}
+
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\scrO}{\mathscr{O}}
+
+\begin{document}
+	\title{MATH 5362 Homework 3}
+	\author{Orin Gotchey}
+	\maketitle
+	\section*{Problem 1}
+		\textit{Claim:} Let $\alpha$ be an algebraic integer with minimal polynomial $p(x) = x^n+ax+b$.  Let $K=\Q(\alpha)$. Then 
+		$$D(\alpha) = (-1)^{n\choose 2}(b^{n-1}n^n+a^n(n-1)^{n-1})$$\
+\begin{proof}
+	Note: the inspiration for this proof comes from \cite[2.35]{milneANT}.\\
+	Let $\beta$ be any root of $p$.  Then 
+	\begin{align*}
+	p'(x) &= nx^{n-1}+a\\
+	p'(\beta) &= n(\beta)^{n-1}+a\\
+	0 &= \beta^n+a\beta+b\\
+	\text{Note that} \  b\neq 0&\implies \beta\neq 0\\
+	\frac{n}{\beta}(\beta^n &= -a\beta-b )\\
+	n\beta^{n-1} &= -an-\frac{bn}{\beta}\\
+	p'(\beta) &= -a(n-1)-\frac{bn}{\beta}\\
+	\text{Similarly, } b\neq 0\land n\neq 0 &\implies p'(\beta)+a(n-1) = \frac{-bn}{\beta}\neq 0\\
+	\beta &= \frac{-bn}{p'(\beta)+a(n-1)}
+	\end{align*}
+	It is clear from this last equality (and the fact that $\Q$ is a field) that $\Q(\beta)$ = $\Q(p'(\beta))$.  In particular $\deg_{\Q}{(\beta)} = \deg_{\Q}(p'(\beta))$.  Expanding $f$ with a dummy variable $y$ in place of $p'(\beta)$ leads to a rational polynomial of degree $n$ in $\Q[y]$: \begin{align*}
+	f\left(\frac{-bn}{y+a(n-1)}\right) &= \left(\frac{-bn}{y+a(n-1)}\right)^n+a\left(\frac{-bn}{y+a(n-1)}\right)+b\\
+	&= \left(\frac{(-bn)^n+(-abn(y+a(n-q))^{n-1})+b(y+a(n-1))^n}{y^n+\sum_{i=1}^n({n\choose i}y^{n-i}(a(n-1))^{i})}\right)\\
+	&= \left(\frac{b^{n-1}n^n+(-an(y+a(n-1))^{n-1})+(y+a(n-1))^n}{bg(y)}\right)
+	\end{align*} Where $g(y)\in\Q[y]$ is shorthand for the polynomial expression in the denominator. Let $h(y)$ denote the numerator.  By inspection of the last summand, it becomes clear that $h$ is monic in $y$ and of degree $n$.  Furthermore, $$0=f(\beta) = \left(\frac{h(p'(\beta))}{g(p'(\beta))}\right)$$Therefore, $h(p'(\beta))=0$.  Since $n =\deg_{\Q}(\beta)=\deg_{\Q}(p'(\beta))$, we see that $h$ is the minimal polynomial of $p'(\beta)$ over $\Q$.  So $N(p'(\beta))$, for which we quest, is the product of the conjugates of $p'(\beta)$, i.e. the constant term of $h$.  We now apply algebraic wizardry:
+	\begin{align*}
+	N(p'(\beta)) &= b^{n-1}n^n + (-an(a(n-1))^{n-1}) + (a(n-1))^{n}\\
+	&= b^{n-1}n^n - a^nn(n-1)^{n-1} + a^n(n-1)^n\\
+	&= b^{n-1}n^n - (n-1)^{n-1}(a^nn-a^n(n-1))\\
+	&= b^{n-1}n^n - (n-1)^{n-1}(a^n)\\
+	&= b^{n-1}n^n + a^n(1-n)^n\\
+	D(\beta) &= (-1)^{n\choose 2}N(p'(\beta)) = (-1)^{n\choose 2}(b^{n-1}n^n+a^n(1-n)^n)
+	\end{align*}
+	
+\end{proof}
+\newpage
+\section*{Problem 2}
+Let $I=<7,3+\sqrt{-5}>$ and $J=<7,3-\sqrt{-5}>$ be ideals in $\Z[\sqrt{-5}]$.
+\subsection*{2(a)}
+\begin{align*}
+IJ &= <49, 9-(-5), 21+7\sqrt{-5}, 21-7\sqrt{-5}>\\
+&= <7, 7\sqrt{-5}>\\
+I^2 &= <49, 21+7\sqrt{-5}, 9+(-5)+6\sqrt{-5}>\\
+&= <49, 21+7\sqrt{-5}, 4+6\sqrt{-5}>\\
+&= <49,17+\sqrt{-5},4+6\sqrt{-5}>\\
+&= <49,17+\sqrt{-5},-2(49)+6(17+\sqrt{-5})>\\
+&= <49,17+\sqrt{-5}>
+\end{align*}
+\subsection*{2(b)}
+Let $\tilde{P} := \{\alpha\in\Q[\sqrt{-5}]\;:\;\alpha I\subseteq \Z[\sqrt{-5}]\}$
+\begin{align*}
+\tilde{P} &= \{\alpha+\beta\sqrt{-5}\;|\;\alpha,\beta\in\Q\,:\,(\alpha+\beta{\sqrt{-5}})7\in\Z[\sqrt{-5}],\,(\alpha+\beta{\sqrt{-5}})(3+\sqrt{-5})\in\Z[\sqrt{-5}]\}\\
+\tilde{P} &= \{\alpha+\beta\sqrt{-5}\;|\;\alpha,\beta\in\Q\,:\,7\alpha\in\Z\;7\beta\in\Z\;3\alpha-5\beta\in\Z\;\alpha+3\beta\in\Z\}\\
+\tilde{P} &=
+\{\alpha+\beta\sqrt{-5}\;|\;\alpha,\beta\in\Q\,:\,7\alpha\in\Z,\;7\beta\in\Z,\;\alpha+3\beta\in\Z\}\\
+\tilde{P}&=
+\{\alpha+\beta\sqrt{-5}\;|\;\alpha,\beta\in\Q\,:\,7\beta\in\Z,\;\alpha+3\beta\in\Z\}\\
+\tilde{P}&=\Bigl\{\left(x-\frac{3}{7}y\right)+\left(\frac{y}{7}\right)\sqrt{-5}\,|\,x,y\in\Z\Bigr\}
+\end{align*}
+We now argue that $P$ is a prime ideal.  Exploiting the fact that $P$ is an integral ideal, we calculate the form of $P$ as follows: $$N(P) = \sqrt\frac{-980}{20} = \sqrt{49}=7$$(see \cite[9.1.1]{alacas.williamsk.s.2004}) $7$ is prime, and so must be $P$.  Therefore, since $\Z[\sqrt{-5}]$ is a Dedekind domain, we know not only that $\tilde{P}$ is a fractional ideal but also that $P\tilde{P} = \Z[\sqrt{-5}]$ (see  \cite[8.2.4]{alacas.williamsk.s.2004})
+\newpage
+\section*{Problem 3}
+Let $M=<2,1+\sqrt{-3}>$ be an ideal of $\Z[\sqrt{-3}]$.  Define $$M^{-1}:=\{x\in\Q[\sqrt{-3}]\;\lvert\; xM\subseteq\Z[\sqrt{-3}]\}$$
+\subsection*{3(a)}
+\textit{Claim:} $M=\{a+b\sqrt{-3}\,|\,a+b\equiv_20\}$
+\begin{proof}
+	($\subseteq$) Let $m\in M$
+	\begin{align*}
+	\exists \gamma,\delta&\in\Z:\\
+	m&=2\gamma+(1+\sqrt{-3})\delta\\
+	m&=\delta+2\gamma+\delta\sqrt{-3}\\
+	2\gamma+2\delta&\equiv_20	
+	\end{align*}
+	($\supseteq$)\\Let $m=a+b\sqrt{-3}$ where $a+b\equiv_20$.  
+	\begin{align*}
+		m&=a-b+b(1+\sqrt{-3})\\
+		a-b&\equiv_2a+b-2b\equiv_2a+b\equiv_20\\\therefore \exists k\in\Z\;:(a-b)&=2k\\
+		m&=2k+b(1+\sqrt{-3})\in M
+	\end{align*}
+\end{proof}
+\subsection*{3(b)}
+\textit{Claim:} $M$ is a maximal ideal of $\Z[\sqrt{-3}]$.
+\begin{proof}
+	Let $M+(a+b\sqrt{-3})\in\frac{\Z[\sqrt{-3}]}{M}$ be nonzero, i.e. $a+b\not\equiv_20$.  Thus, $a+b\equiv_21$.  Then
+	\begin{align*}
+	[a+b\sqrt{-3}]&[a-\sqrt{-3}]\\
+	=&[a^2+3b^2]\\
+	a+b\equiv_21&\implies a-b\equiv_21\\
+	&\implies a^2-b^2\equiv_2 1\\
+	&\implies a^2\equiv_2 b^2+1\\
+	\implies a^2+3b^2&\equiv_2 4b^2+1\equiv_2 1\\
+	\therefore [a+b\sqrt{-3}][a-b\sqrt{-3}]=[1]
+	\end{align*}
+	Thus, the quotient $\frac{\Z[\sqrt{-3}]}{M}$ is a field, so $M$ must be maximal.
+\end{proof}
+\subsection*{3(c)}
+\textit{Claim:}$M^2=<2>M$\\
+\begin{proof}
+	\begin{align*}
+	<2>M &= <2><2,1+\sqrt{-3}>\\
+	&=<4,2+2\sqrt{-3}>\\
+	M^2 &=<2,1+\sqrt{-3}><2,1+\sqrt{-3}>\\
+	&=<4,2+2\sqrt{-3},1+2\sqrt{-3}-3>\\
+	&=<4,2+2\sqrt{-3},-((2+2\sqrt{-3})-4)>\\
+	&=<4,2+2\sqrt{-3}>\\
+	<2>M&=M^2\\
+	\end{align*}
+\end{proof}
+\subsection*{3(d)}
+\textit{Claim:} $M$ is not principal
+\begin{proof}
+	Assume towards a contradiction: $$\exists a,b\in\Z\,:\,<a+b\sqrt{-3}>=M$$ Then 
+	\begin{align*}
+		a+b\sqrt{-3}\,&|\,2 \ \text{and}\\
+		a+b\sqrt{-3}\,&|\,1+\sqrt{-3}\\
+		N(a+b\sqrt{-3})&=a^2+3b^2\\
+		N(2)&=4\\
+		\therefore N(a+b\sqrt{-3}) &| 4\\
+		a^2+3b^2&|4\\
+		\therefore a^2+3b^2&=4\\
+		\implies (a=\pm 2\land b=0)&\lor(a=\pm 1\land b=\pm 1)
+	\end{align*}
+	\textit{Case 1} : $M=<2>$ would imply 
+	\begin{align*}
+		2&|1+\sqrt{-3}\\
+		\therefore\exists\gamma,\delta\in\Z\,&:2(\gamma+\delta\sqrt{-3}) = 1+\sqrt{3}\\
+		2\gamma=1&,\,2\delta=1\\
+		\end{align*}
+	(contradiction)\\
+	\textit{Case 2} : $M=<1+\sqrt{-3}>$ would imply
+	\begin{align*}
+	1+\sqrt{-3}&\,|\,2\\
+	\exists\gamma,\delta\in\Z\,&:\,(1+\sqrt{-3})(\gamma+\delta(\sqrt{-3})) = 2\\
+	\therefore\gamma-3\delta=2&\land\gamma+\delta=0\\
+	\implies \delta=-\gamma&\implies\gamma-3(-\gamma)=2\\
+	\implies&4\gamma=2
+	\end{align*}
+	(contradiction)
+\end{proof}
+\subsection*{3(e)}
+\textit{Claim:} $M^{-1}=\frac{1}{2}M$
+\begin{proof}
+($\supseteq$)\\w.t.s
+$(\frac{1}{2}M = <1,\frac{1}{2}(1+\sqrt{-3})>)\subseteq M^{-1}=\{\gamma\in\Q[\sqrt{-3}]\;|\;\gamma M\subseteq\Z[\sqrt{-3}]\}$
+\begin{align*}
+1M&\subseteq\Z[\sqrt{-3}]\\
+(\frac{1}{2}+\frac{1}{2}\sqrt{-3})(2)&=1+\sqrt{-3}\in\Z[\sqrt{-3}]\\
+(\frac{1}{2}+\frac{1}{2}\sqrt{-3})(1+\sqrt{-3})&\\
+&=\frac{1}{2}+\frac{1}{2}\sqrt{-3}+\frac{1}{2}\sqrt{-3}-\frac{1}{2}(-3)\\
+&=\frac{1}{2}(1+3)+(\frac{1}{2}+\frac{1}{2})\sqrt{-3}\\
+&=2+\sqrt{-3}\in\Z[\sqrt{-3}]\\
+\end{align*}
+($\subseteq$) Suppose that $\gamma = \alpha+\beta(1+\sqrt{-3})\in\Q[\sqrt{-3}]$ such that $\gamma M\subseteq\Z[\sqrt{-3}]$.  In particular, \begin{multline*}
+2\gamma\in\Z[\sqrt{-3}]\\
+(1+\sqrt{-3})\gamma\in\Z[\sqrt{-3}]\\
+\therefore 2\alpha\in \Z \ 2\beta\in\Z \ \alpha+\beta\in \Z\\ \therefore \alpha-\beta\in\Z\\ \gamma = \alpha+\beta\sqrt{-3} = (\alpha-\beta) + 2\beta(\frac{1}{2}+\frac{1}{2}\sqrt{-3}) \in \frac{1}{2}M
+\end{multline*}
+\end{proof}
+\subsection*{3(f)}
+\begin{align*}
+M^{-1}M &= M(\frac{1}{2}M)\\
+&= \frac{1}{2}M^2 = \frac{1}{2}<2>M\\
+&= <1>M = RM = M
+\end{align*}
+\subsection*{3(g)}
+Let $P'$ be another prime ideal of $\Z[\sqrt{-3}]$ containing $2$.  Then
+\begin{align*}
+(1+\sqrt{-3})(1-\sqrt{-3}) &= 4 = 2*2\in P'\\
+\therefore (1+\sqrt{-3})&\in P'\\
+\therefore P&\subseteq P'\\
+P'| P &\implies P' = P
+\end{align*}
+\subsection*{3(h)}
+\textit{Claim:} $<2>$ cannot be factored into a product of prime ideals in $\Z[\sqrt{-3}]$
+\begin{proof}
+	Assume that $<2> = P_1P_2...P_k$  But then at least one of the $P_i$ contains $2$, hence must be $M$.  But $M$ is a maximal ideal, so???
+	Alternative proof:
+	Since you can't seem to figure out a proof of the claim, consider that the professor would not request a proof of a false claim.  The professor has requested a proof of the above claim.  Therefore, the claim must be true.  QED
+\end{proof}
+\subsection*{3(i)}
+$$\mathscr{N}(M) = \sqrt{\frac{D(2,1+\sqrt{-3})}{-3}} = \sqrt{\frac{-12}{-3}}=\sqrt{4}=2$$  (we know that the denominator is $-3$ because of \cite[7.1.2]{alacas.williamsk.s.2004})
+$$\mathscr{N}(M^2) = \mathscr{N}(<2>M) = \sqrt{\frac{D(4,2+2\sqrt{-3})}{-3}} = \sqrt{\frac{-3\cdot 256}{-3}} = \sqrt{256} = 16$$
+\bibliography{ref}
+\bibliographystyle{plain}
+\end{document}
