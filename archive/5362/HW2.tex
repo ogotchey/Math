@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{chunk}[theorem]{}
+
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\scrO}{\mathscr{O}}
+
+\allowdisplaybreaks
+
+\begin{document}
+\title{MATH 5362 Homework II}
+\author{Orin Gotchey}
+\maketitle
+\section{Problem I}
+\begin{proposition}
+	Let $K=\Q(\theta)$ where $\theta^3+11\theta-4=0$.  Then $\frac{\theta^2-\theta}{2}\in\scrO_K$
+\end{proposition}
+\begin{proof}
+	\begin{align*}
+	\theta^3 &= 4-11\theta\\
+	x &:= \frac{1}{2}(\theta^2-\theta)\\
+	x^2 &= \frac{1}{4}(\theta^4-2\theta^3+\theta^2)\\
+	&=\frac{1}{4}(\theta(4-11\theta)-2(4-11\theta)+\theta^2)\\
+	&=\frac{1}{4}(4\theta-11\theta^2-8+22\theta+\theta^2)\\
+	&=\frac{1}{4}(-10\theta^2+26\theta-8)\\
+	&=\frac{1}{2}(-5\theta^2+13\theta-4)\\
+	x^2+5x&=\frac{1}{2}(-5\theta^2+13\theta-4+5\theta^2-5\theta)\\
+	&= \frac{1}{2}(8\theta-4) = 4\theta-2\\
+	x^3 &= \frac{1}{4}(-5\theta^4+13\theta^3-4\theta^2+5\theta^3-13\theta^2+4\theta)\\
+	&= \frac{1}{4}(-5\theta^4+18\theta^3-17\theta^2+4\theta)\\
+	&=\frac{1}{4}(-5\theta(4-11\theta)+18(4-11\theta)-17\theta^2+4\theta)\\
+	&=\frac{1}{4}(-20\theta+55\theta^2+72-198\theta-17\theta^2+4\theta)\\
+	&=\frac{1}{4}(38\theta^2-214\theta+72)\\
+	&=\frac{1}{2}(19\theta^2-107\theta+36)\\
+	x^3-19x&=\frac{1}{2}(19\theta^2-107\theta+36-(19\theta^2-19\theta))\\
+	&= \frac{1}{2}(-88\theta+36)\\
+	&= (-44\theta+18)\\
+	x^3-19x+11(x^2+5x) &= (-44\theta+18)+11(4\theta-2)\\
+	x^3+11x^2+36x&= -44\theta+18+44\theta-22\\
+	&= -4\\
+	x^3+11x^2+36x+4&=0
+	\end{align*}
+\end{proof}
+\section{Problem II}
+\begin{proposition}
+	Let $K=\Q(\theta)$ where $\theta^3-4\theta+2=0$.  Let $\alpha=\theta+\theta^2$.  Then $D(\alpha) = -148$
+\end{proposition}
+\begin{proof}
+	\begin{align*}
+	\alpha^2&=\theta^4+2\theta^3+\theta^2\\
+	&=\theta(4\theta-2)+2(4\theta-2)+\theta^2\\
+	&=4\theta^2-2\theta+8\theta-4+\theta^2\\
+	&=5\theta^2+6\theta-4\\
+	\alpha^2-5\alpha&=\theta-4\\
+	\alpha^3&=5\theta^4+6\theta^3-4\theta^2+5\theta^3+6\theta^2-4\theta\\
+	&=5\theta^4+11\theta^3+2\theta^2-4\theta\\
+	&=5\theta(4\theta-2)+11(4\theta-2)+2\theta^2-4\theta\\
+	&=20\theta^2-10\theta+44\theta-22+2\theta^2-4\theta\\
+	&=22\theta^2+30\theta-22\\
+	\alpha^3-22\alpha&=22\theta^2+30\theta-22-(22\alpha^2+22\alpha)\\
+	&= 8\alpha-22\\
+	\alpha^3-22\alpha-8(\alpha^2-5\alpha)&=8\alpha-22-8(\alpha-4)\\
+	&= 10\\
+	\alpha^3-8\alpha^2+18\alpha-10&=0
+	\end{align*}
+	Now, clearly $p(x) := x^3-8x^2+18x-10$ is monic.  It is irreducible via the rational roots theorem.  Thus, it is the minimal polynomial of $\alpha$.  Furthermore, let $$p'(x) = 3x^2-16x+18$$ be the formal derivative of $p$.  Then:
+	\begin{align*}
+	p'(\alpha) &= 3\alpha^2-16\alpha+18\\
+	&= 3(\theta+\theta^2)^2-16(\theta+\theta^2)+18\\
+	&= 3(\theta^4+2\theta^3+\theta^2)-16(\theta+\theta^2)+18\\
+	&= 3\theta^4+6\theta^3+3\theta^2-16\theta-16\theta^2+18\\
+	&= 3\theta^4+6\theta^3-13\theta^2-16\theta+18\\
+	&=3\theta(4\theta-2)+6(4\theta-2)-13\theta^2-16\theta+18\\
+	&= 12\theta^2-6\theta+24\theta-12-13\theta^2-16\theta+18\\
+	&=-\theta^2+2\theta+6\\
+	\theta\cdot p'(\alpha)&=-(\theta^3)+2\theta^2+6\theta\\
+	&= -(4\theta-2)+2\theta^2+6\theta\\
+	&= 2\theta^2+2\theta+2\\
+	\theta^2\cdot p'(\alpha) &= 2\theta^3+2\theta^2+2\theta\\
+	&= 2(4\theta-2)+2\theta^2+2\theta\\
+	&= 2\theta^2+10\theta-4
+	\end{align*}
+	Now, $\{1,\theta,\theta^2\}$ is a basis for $\Q(\theta)$.  This means that the norm $N_{\Q(\theta)}(p'(\alpha))$ is in fact the determinant of a matrix as follows:
+	$$N_{\Q(\theta)}(p'(\alpha))=\det\begin{vmatrix}
+		-1 & 2 & 6\\
+		2& 2& 2\\
+		2&10&-4\\
+	\end{vmatrix} = 148$$
+	To conclude, we use the following formula,
+	\begin{align*}
+	D(\alpha) &= (-1)^{n\choose 2}N_K(p'(\alpha))\\
+	&= (-1)^3 (148)\\
+	&= -148
+	\end{align*}
+\end{proof}
+\section{Problem III}
+\begin{proposition}
+	For $p$ an odd prime, the discriminant of the cyclotomic field $\Q(\zeta_p)$ equals $(-1)^{\frac{p-1}{2}}p^{p-2}$
+\end{proposition}
+\begin{proof}
+	The discriminant of a general cyclotomic field $\Q(\zeta_n)$, where $\zeta_n$ is taken to be primitive, is given by: $$D(\Q(\zeta_n)) = (-1)^{\frac{\phi(n)}{2}}\frac{n^{\phi(n)}}{\prod_{p|n}p^{\frac{\phi(n)}{p-1}}}$$Since $p$ is an odd prime, then $\phi(p)=p-1$ and $\prod_{q|p}q^\frac{\phi(p)}{p-1} = p$.  Substituting, we have:
+	$$D(\Q(\zeta_p)) = (-1)^{\frac{p-1}{2}}\frac{p^{p-1}}{p}=(-1)^{\frac{p-1}{2}}p^{p-1}$$
+\end{proof}
+\section{Problem V}
+\begin{proposition}
+	Let $\theta:=\sqrt[3]{12}$.  Then $x:=\frac{1}{2}\sqrt[3]{12}\in\scrO_{\Q(\theta)}$, but $x$ does not lie in the $\Z$-span of $\{1,\theta,\theta^2\}$.
+\end{proposition}
+\begin{proof}
+	\begin{equation*}
+	x = \frac{\sqrt[3]{12}}{2} = -\frac{\sqrt[3]{12}}{2}(e^{\frac{2\pi i}{3}}+e^{\frac{4\pi i}{3}})
+	\end{equation*}
+	Let $y_1 := \sqrt[3]{12}e^{\frac{2\pi i}{3}}$ and $y_2 := \sqrt[3]{12}e^{\frac{4\pi i}{3}}$.  Then
+	\begin{align*}
+	x &= -(y_1+y_2)\\
+	x^3 &=(y_1^3+3y_1^{2}y_2+3y_1y_2^2+y_2^3)\\
+	y_1^3 = y_2^3 &= 12\\
+	y_1^2 &= (\sqrt[3]{12})y_2\\
+	y_2^2 &= (\sqrt[3]{12})y_1\\
+	3y_1^{2}y_2+3y_1y_2^2 &= (3\cdot{12})(y_1^2+y_2^2) = -6x\\
+	x^3 &= -\frac{1}{8}(12-6x+12)
+	\end{align*}
+	Proof incomplete.
+\end{proof}
+\end{document}
